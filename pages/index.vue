@@ -8,7 +8,7 @@
     </header>
 
     <main class="w-100">
-      <p class="leading-tight text-md mb-6 max-w-3xl">
+      <p class="leading-tight text-md mb-6 max-w-3xl pl-4">
         Change paths entries and verify the result on the right. Entries appear
         sorted in <i>descendant</i> score order. You can customize global
         options and also apply overrides.
@@ -84,10 +84,26 @@
             </template>
 
             <button
+              class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2
+            px-4 border border-gray-400 rounded shadow mt-6 mb-2 block
+            sm:inline-block w-full lg:w-auto"
+              @click="exportPaths"
+            >
+              Copy path list to clipboard
+            </button>
+            <button
+              class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2
+            px-4 border border-gray-400 rounded shadow mb-2 block
+            sm:inline-block w-full lg:w-auto"
+              @click="importPaths"
+            >
+              Import path list
+            </button>
+            <button
               type="reset"
-              class="block w-full bg-red-500 hover:bg-red-700 text-white
+              class="bg-red-500 hover:bg-red-700 text-white
             hover:text-gray-100 font-semibold py-2 px-4 border border-gray-400
-            rounded shadow mt-6"
+            rounded shadow block sm:inline-block w-full lg:w-auto"
             >
               Reset
             </button>
@@ -124,6 +140,14 @@
           </label>
         </article>
       </div>
+
+      <footer class="text-xs text-gray-700 mt-8 text-center">
+        Created by Eduardo San Martin Morote
+        <a href="https://esm.dev" class="text-purple-500 font-bold underline"
+          >@posva</a
+        >
+        2019 ©
+      </footer>
     </main>
   </div>
 </template>
@@ -132,6 +156,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import pathToRegexp from 'path-to-regexp'
+import copy from 'copy-text-to-clipboard'
 import { PathToRank } from './types'
 import { createRouteMatcher } from '~/api/path-rank'
 import PathEntry from '~/components/PathEntry.vue'
@@ -205,6 +230,20 @@ export default class App extends Vue {
         this.paths.push(createPathEntry())
       }
     })
+  }
+
+  exportPaths() {
+    copy(JSON.stringify(this.paths))
+  }
+
+  importPaths() {
+    const json = window.prompt('Paste the JSON list of paths here')
+    try {
+      if (!json) return
+      this.paths = JSON.parse(json)
+    } catch (error) {
+      console.error('Failed parsing JSON', json)
+    }
   }
 }
 </script>
