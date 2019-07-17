@@ -69,12 +69,15 @@
                 >
               </label>
             </fieldset>
-            <PathEntry
-              v-for="(path, i) in paths"
-              :path="path"
-              :key="i"
-              class="mb-2 p-2"
-            />
+            <template v-for="(path, i) in paths">
+              <PathEntry
+                :path="path"
+                :active="selectedEntry === path.path"
+                :key="i"
+                class="p-2"
+              />
+              <hr :key="'hr' + i" class="bg-gray-400 h-px my-2" />
+            </template>
 
             <button
               type="reset"
@@ -93,11 +96,28 @@
           </header>
           <!-- TODO: add hover to highlight on the left -->
           <RouteMatcher
-            class="mb-2 rounded border-2 border-blue-300 px-2 py-1 hover:bg-gray-200"
+            class="mb-2"
             v-for="(matcher, i) in matchers"
             :matcher="matcher"
             :key="i"
+            :current-location="route"
+            @focus.native.passive="selectedEntry = matcher.path"
+            @blur.native.passive="selectedEntry = null"
+            @mouseover.native.passive="selectedEntry = matcher.path"
+            @mouseleave.native.passive="selectedEntry = null"
           />
+
+          <label for="check-path" class="mt-3 block">
+            Test against a string location:
+            <input
+              id="tester.check-path"
+              v-model="route"
+              class="block bg-white focus:outline-0 focus:shadow-outline border border-gray-300
+    rounded-lg py-2 px-4 block w-full appearance-none leading-normal text-sm mt-2"
+              type="text"
+              placeholder="/home"
+            />
+          </label>
         </article>
       </div>
     </main>
@@ -130,6 +150,8 @@ export default class App extends Vue {
     createPathEntry('/:page'),
     createPathEntry(),
   ]
+  selectedEntry: string | null = null
+  route: string = ''
 
   globalOptions: pathToRegexp.RegExpOptions = {
     strict: false,

@@ -1,12 +1,50 @@
 <template>
-  <div class="py-1">
+  <div
+    class="py-1 rounded"
+    :class="active && 'bg-blue-100'"
+    :aria-selected="active"
+  >
     <input
       v-model="path.path"
-      class="bg-white focus:outline-0 focus:shadow-outline border border-gray-300
-    rounded-lg py-2 px-4 block w-full appearance-none leading-normal max-w-xs"
+      class="block bg-white focus:outline-0 focus:shadow-outline border border-gray-300
+    rounded-lg py-2 px-4 block w-full appearance-none leading-normal"
       type="text"
       placeholder="/users/:id"
     />
+    <fieldset
+      v-if="path.path"
+      class="border pl-4 pr-1 pb-2"
+      :disabled="!path.applyOptions"
+    >
+      <legend class="p-2">
+        <label class="text-md block">
+          <input
+            class="leading-tight"
+            v-model="path.applyOptions"
+            type="checkbox"
+          />
+          Options override
+        </label>
+      </legend>
+
+      <label class="text-sm">
+        <input
+          class="leading-tight"
+          v-model="path.options.strict"
+          type="checkbox"
+        />
+        Strict
+      </label>
+
+      <label class="text-sm">
+        <input
+          class="leading-tight"
+          v-model="path.options.sensitive"
+          type="checkbox"
+        />
+        Case sensitive
+      </label>
+    </fieldset>
   </div>
 </template>
 
@@ -17,6 +55,7 @@ import Component from 'vue-class-component'
 @Component({
   props: {
     path: Object,
+    active: Boolean,
   },
 })
 export default class PathEntry extends Vue {}
