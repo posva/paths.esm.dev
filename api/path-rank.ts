@@ -162,9 +162,9 @@ export function createRouteMatcher(
         score +=
           +group.optional * PathScore.Optional +
           +group.repeat * PathScore.Repeatable
-        if (typeof group.name === 'number') {
-          throw new TypeError('Name your param')
-        }
+        // if (typeof group.name === 'number') {
+        //   throw new TypeError('Name your param')
+        // }
         // keys.push(group.name)
       }
       return score

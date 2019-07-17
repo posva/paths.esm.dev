@@ -1,36 +1,106 @@
 <template>
-  <div class="container">
-    <div>
-      <h1 class="title">path-ranker</h1>
-      <h2 class="subtitle">A vue router path ranker tester</h2>
-      <form @submit.prevent @reset.prevent="reset">
-        <fieldset>
-          <label for="globalOptions.strict">
-            <input
-              id="globalOptions.strict"
-              v-model="globalOptions.strict"
-              type="checkbox"
-              name="globalOptions.strict"
-            />
-            Strict
-          </label>
-          <label for="globalOptions.sensitive">
-            <input
-              id="globalOptions.sensitive"
-              v-model="globalOptions.sensitive"
-              type="checkbox"
-              name="globalOptions.sensitive"
-            />
-            Sensitive
-          </label>
-        </fieldset>
-        <PathEntry v-for="(path, i) in paths" :path="path" :key="i" />
+  <div>
+    <header class="my-10">
+      <h1 class="text-4xl font-serif leading-tight">Path Ranker</h1>
+      <h2 class="text-lg text-gray-600 ml-2 mb-4">
+        A vue router path rank tester
+      </h2>
+    </header>
 
-        <button type="reset">Reset</button>
-      </form>
+    <main class="w-100">
+      <p class="leading-tight text-md mb-6 max-w-3xl">
+        Change paths entries and verify the result on the right. Entries appear
+        sorted in <i>descendant</i> score order. You can customize global
+        options and also apply overrides.
+        <br />
+        This uses
+        <a
+          href="https://github.com/pillarjs/path-to-regexp"
+          class="text-blue-600 font-bold hover:underline"
+          >path-to-regexp</a
+        >
+        to parse paths. I invite you to check its documentation to learn how to
+        use custom regexes like <code>/:id(\\d+)</code> and
+        <i>repeatable</i> parameters like <code>/:id+</code>.
+      </p>
 
-      <pre>{{ matchers }}</pre>
-    </div>
+      <div
+        class="flex items-strecth content-around justify-around flex-col md:flex-row"
+      >
+        <article class="flex-1 px-1">
+          <header>
+            <h3 class="font-serif text-xl mb-4">Paths to rank</h3>
+          </header>
+          <form @submit.prevent @reset.prevent="reset">
+            <fieldset class="border pl-4 pr-1 pb-2 mb-2">
+              <legend class="p-2">
+                Configure global options. They will be applied to
+                <b>every</b> path.
+              </legend>
+
+              <label for="globalOptions.strict" class="font-bold text-sm block">
+                <input
+                  class="leading-tight"
+                  id="globalOptions.strict"
+                  v-model="globalOptions.strict"
+                  type="checkbox"
+                  name="globalOptions.strict"
+                />
+                Strict
+                <span class="text-xs text-gray-600"
+                  >(Disallows the check of an optional <code>/</code> at the end
+                  of the path)</span
+                >
+              </label>
+              <label
+                for="globalOptions.sensitive"
+                class="font-bold text-sm block"
+              >
+                <input
+                  class="leading-tight"
+                  id="globalOptions.sensitive"
+                  v-model="globalOptions.sensitive"
+                  type="checkbox"
+                  name="globalOptions.sensitive"
+                />
+                Case sensitive
+                <span class="text-xs text-gray-600"
+                  >(makes the route case sensitive)</span
+                >
+              </label>
+            </fieldset>
+            <PathEntry
+              v-for="(path, i) in paths"
+              :path="path"
+              :key="i"
+              class="mb-2 p-2"
+            />
+
+            <button
+              type="reset"
+              class="block w-full bg-red-500 hover:bg-red-700 text-white
+            hover:text-gray-100 font-semibold py-2 px-4 border border-gray-400
+            rounded shadow mt-6"
+            >
+              Reset
+            </button>
+          </form>
+        </article>
+
+        <article class="flex-1 mt-4 md:mt-0 text-left px-1">
+          <header>
+            <h3 class="font-serif text-xl mb-8">Ranking results</h3>
+          </header>
+          <!-- TODO: add hover to highlight on the left -->
+          <RouteMatcher
+            class="mb-2 rounded border-2 border-blue-300 px-2 py-1 hover:bg-gray-200"
+            v-for="(matcher, i) in matchers"
+            :matcher="matcher"
+            :key="i"
+          />
+        </article>
+      </div>
+    </main>
   </div>
 </template>
 
@@ -41,6 +111,7 @@ import pathToRegexp from 'path-to-regexp'
 import { PathToRank } from './types'
 import { createRouteMatcher } from '~/api/path-rank'
 import PathEntry from '~/components/PathEntry.vue'
+import RouteMatcher from '~/components/RouteMatcher.vue'
 
 function createPathEntry(path = ''): PathToRank {
   return {
@@ -51,7 +122,7 @@ function createPathEntry(path = ''): PathToRank {
 }
 
 @Component({
-  components: { PathEntry },
+  components: { PathEntry, RouteMatcher },
 })
 export default class App extends Vue {
   paths: PathToRank[] = [
@@ -75,12 +146,16 @@ export default class App extends Vue {
   get matchers() {
     return this.paths
       .filter(({ path }) => !!path)
-      .map(({ path, options, applyOptions }) =>
-        createRouteMatcher(path, void 0, {
-          ...this.globalOptions,
-          ...(applyOptions ? options : {}),
-        })
-      )
+      .map(({ path, options, applyOptions }) => {
+        try {
+          return createRouteMatcher(path, void 0, {
+            ...this.globalOptions,
+            ...(applyOptions ? options : {}),
+          })
+        } catch (error) {
+          return error
+        }
+      })
       .sort((a, b) => b.score - a.score)
   }
 

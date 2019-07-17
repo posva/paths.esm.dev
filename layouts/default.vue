@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container mx-auto sm:px-2 px-4">
     <nuxt />
   </div>
 </template>
