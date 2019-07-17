@@ -17,13 +17,14 @@ module.exports = {
     '@nuxtjs',
     'plugin:nuxt/recommended',
   ],
-  plugins: ['prettier'],
   // add your custom rules here
   rules: {
     'comma-dangle': ['error', 'always-multiline'],
+    'space-before-function-paren': ['error', 'never'],
     'vue/max-attributes-per-line': 0,
     'vue/singleline-html-element-content-newline': 0,
     'vue/html-closing-bracket-newline': 0,
     'vue/html-indent': 0,
+    'vue/html-self-closing': 0,
   },
 }

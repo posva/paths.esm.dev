@@ -1,20 +1,35 @@
 <template>
   <div class="container">
     <div>
-      <logo />
       <h1 class="title">path-ranker</h1>
       <h2 class="subtitle">A vue router path ranker tester</h2>
-      <div class="links">
-        <a href="https://nuxtjs.org/" target="_blank" class="button--green"
-          >Documentation</a
-        >
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-          >GitHub</a
-        >
-      </div>
+      <form @submit.prevent>
+        <fieldset>
+          <label for="options.strict">
+            <input
+              id="options.strict"
+              v-model="globalOptions.strict"
+              type="checkbox"
+              name="options.strict"
+            />
+            Strict
+          </label>
+          <label for="options.sensitive">
+            <input
+              id="options.sensitive"
+              v-model="globalOptions.sensitive"
+              type="checkbox"
+              name="options.sensitive"
+            />
+            Sensitive
+          </label>
+        </fieldset>
+        <input v-model="paths[0].path" type="text" />
+        <input v-model="paths[1].path" type="text" />
+        <button>Check</button>
+      </form>
+
+      <pre>{{ matchers }}</pre>
     </div>
   </div>
 </template>
@@ -22,48 +37,25 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import Logo from '~/components/Logo.vue'
+import pathToRegexp from 'path-to-regexp'
+import { PathToRank } from './types'
+import { createRouteMatcher } from '~/api/path-rank'
 
-@Component({
-  components: { Logo },
-})
-export default class App extends Vue {}
+@Component({})
+export default class App extends Vue {
+  paths: PathToRank[] = [
+    { path: '/home', options: {} },
+    { path: '/:page', options: {} },
+  ]
+  globalOptions: pathToRegexp.RegExpOptions = {
+    strict: false,
+    sensitive: false,
+  }
+
+  get matchers() {
+    return this.paths.map(({ path, options }) =>
+      createRouteMatcher(path, void 0, { ...this.globalOptions, ...options })
+    )
+  }
+}
 </script>
-
-<style>
-/* Sample `apply` at-rules with Tailwind CSS
-.container {
-  @apply min-h-screen flex justify-center items-center text-center mx-auto;
-}
-*/
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
-</style>
