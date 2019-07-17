@@ -1,4 +1,6 @@
-export default {
+import NuxtConfiguration from '@nuxt/config'
+
+const config: NuxtConfiguration = {
   mode: 'universal',
   /*
    ** Headers of the page
@@ -33,9 +35,10 @@ export default {
    */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios',
-    '@nuxtjs/eslint-module'
+    '@nuxtjs/axios'
   ],
+
+  devModules: [['@nuxtjs/eslint-module', { emitWarning: true }]],
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
@@ -56,3 +59,5 @@ export default {
     extend(config, ctx) {}
   }
 }
+
+export default config
