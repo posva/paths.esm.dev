@@ -19,8 +19,8 @@
       <legend class="p-2">
         <label class="text-md block">
           <input
-            class="leading-tight"
             v-model="path.applyOptions"
+            class="leading-tight"
             type="checkbox"
           />
           Options override
@@ -29,8 +29,8 @@
 
       <label class="text-sm">
         <input
-          class="leading-tight"
           v-model="path.options.strict"
+          class="leading-tight"
           type="checkbox"
         />
         Strict
@@ -38,8 +38,8 @@
 
       <label class="text-sm">
         <input
-          class="leading-tight"
           v-model="path.options.sensitive"
+          class="leading-tight"
           type="checkbox"
         />
         Case sensitive
@@ -61,5 +61,4 @@ import Component from 'vue-class-component'
 export default class PathEntry extends Vue {}
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

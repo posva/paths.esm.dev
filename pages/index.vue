@@ -22,6 +22,10 @@
         to parse paths. I invite you to check its documentation to learn how to
         use custom regexes like <code>/:id(\\d+)</code> and
         <i>repeatable</i> parameters like <code>/:id+</code>.
+        <br />
+        The number in a box that looks like this
+        <span class="font-bold bg-gray-400 px-1 inline-block rounded">5</span>
+        is the score of the path.
       </p>
 
       <div
@@ -40,9 +44,9 @@
 
               <label for="globalOptions.strict" class="font-bold text-sm block">
                 <input
-                  class="leading-tight"
                   id="globalOptions.strict"
                   v-model="globalOptions.strict"
+                  class="leading-tight"
                   type="checkbox"
                   name="globalOptions.strict"
                 />
@@ -57,9 +61,9 @@
                 class="font-bold text-sm block"
               >
                 <input
-                  class="leading-tight"
                   id="globalOptions.sensitive"
                   v-model="globalOptions.sensitive"
+                  class="leading-tight"
                   type="checkbox"
                   name="globalOptions.sensitive"
                 />
@@ -71,9 +75,9 @@
             </fieldset>
             <template v-for="(path, i) in paths">
               <PathEntry
+                :key="i"
                 :path="path"
                 :active="selectedEntry === path.path"
-                :key="i"
                 class="p-2"
               />
               <hr :key="'hr' + i" class="bg-gray-400 h-px my-2" />
@@ -96,10 +100,10 @@
           </header>
           <!-- TODO: add hover to highlight on the left -->
           <RouteMatcher
-            class="mb-2"
             v-for="(matcher, i) in matchers"
-            :matcher="matcher"
             :key="i"
+            class="mb-2"
+            :matcher="matcher"
             :current-location="route"
             @focus.native.passive="selectedEntry = matcher.path"
             @blur.native.passive="selectedEntry = null"
