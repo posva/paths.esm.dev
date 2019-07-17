@@ -36,6 +36,7 @@
     "nodemon": "^1.18.9",
     "prettier": "^1.16.4",
     "tailwindcss": "^1.0.0",
-    "typescript": "^3.5.3"
+    "typescript": "^3.5.3",
+    "vue-class-component": "^7.1.0"
   }
 }
