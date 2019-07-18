@@ -131,6 +131,10 @@
             Test against a string location:
             <input
               id="tester.check-path"
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="off"
+              spellcheck="false"
               v-model="route"
               class="block bg-white focus:outline-0 focus:shadow-outline border border-gray-300
     rounded-lg py-2 px-4 block w-full appearance-none leading-normal text-sm mt-2"
@@ -141,7 +145,7 @@
         </article>
       </div>
 
-      <footer class="text-xs text-gray-700 mt-8 text-center">
+      <footer class="text-xs text-gray-700 mt-8 mb-4 text-center">
         Created by Eduardo San Martin Morote
         <a href="https://esm.dev" class="text-purple-500 font-bold underline"
           >@posva</a
