@@ -14,6 +14,7 @@
     rounded-lg py-2 px-4 block w-full appearance-none leading-normal"
       type="text"
       placeholder="/users/:id"
+      @keypress.enter="$emit('enter')"
     />
     <fieldset
       v-if="path.path"
