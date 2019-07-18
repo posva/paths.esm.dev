@@ -158,7 +158,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import pathToRegexp from 'path-to-regexp'
 import copy from 'copy-text-to-clipboard'
-import { PathToRank } from '~/api/types'
+import { PathToRank, RequiredPathOptions } from '~/api/types'
 import { compressPaths, decompressPaths } from '~/api/encode-data'
 import { createRouteMatcher } from '~/api/path-rank'
 import PathEntry from '~/components/PathEntry.vue'
@@ -178,7 +178,11 @@ const defaultPaths = [
   createPathEntry(),
 ]
 
-const defaultEncodedPaths = compressPaths(defaultPaths)
+const defaultOptions: RequiredPathOptions = {
+  strict: false,
+  sensitive: false,
+}
+const defaultEncodedPaths = compressPaths(defaultPaths, defaultOptions)
 
 @Component({
   components: { PathEntry, RouteMatcher },
@@ -190,10 +194,7 @@ export default class App extends Vue {
   route: string = ''
   isLinkCopied = false
 
-  globalOptions: pathToRegexp.RegExpOptions = {
-    strict: false,
-    sensitive: false,
-  }
+  globalOptions: RequiredPathOptions = defaultOptions
 
   get beforeLastPathEntry() {
     return this.paths[this.paths.length - 2]
@@ -231,13 +232,16 @@ export default class App extends Vue {
   }
 
   created() {
+    // this watcher must be triggered automatically to allow SSR
     this.$watch(
       '$route.query.p',
-      (paths: string) => {
-        if (paths && this.lastEncodedPaths !== paths) {
+      (encodedPaths: string) => {
+        if (encodedPaths && this.lastEncodedPaths !== encodedPaths) {
           try {
-            this.paths = decompressPaths(paths)
-            this.lastEncodedPaths = paths
+            const { paths, options } = decompressPaths(encodedPaths)
+            this.paths = paths
+            this.globalOptions = options
+            this.lastEncodedPaths = encodedPaths
           } catch (error) {
             console.error(error)
           }
@@ -254,6 +258,10 @@ export default class App extends Vue {
 
   // we don't need the watchers during SSR
   mounted() {
+    // ensure the route query is present since we generate instead of serving the app
+    if (!this.$route.query.p)
+      this.$router.push({ query: { p: this.lastEncodedPaths } })
+
     this.$watch('beforeLastPathEntry.path', (path) => {
       if (!path && this.paths.length > 2 && !this.lastPathEntry.path) {
         this.paths.pop()
@@ -266,21 +274,20 @@ export default class App extends Vue {
       }
     })
 
-    this.$watch(
-      'paths',
-      (paths: PathToRank[]) => {
-        try {
-          const p = compressPaths(paths)
-          if (p === this.lastEncodedPaths) return
-          // avoid recursive setting
-          this.lastEncodedPaths = p
-          this.$router.push({ query: { p } })
-        } catch (error) {
-          console.error(error)
-        }
-      },
-      { deep: true, immediate: true }
-    )
+    const updateRouteQuery = () => {
+      try {
+        const p = compressPaths(this.paths, this.globalOptions)
+        if (p === this.lastEncodedPaths) return
+        // avoid recursive setting
+        this.lastEncodedPaths = p
+        this.$router.push({ query: { p } })
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    this.$watch('globalOptions', updateRouteQuery, { deep: true })
+    this.$watch('paths', updateRouteQuery, { deep: true, immediate: true })
   }
 
   exportPaths() {

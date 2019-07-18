@@ -15,20 +15,21 @@ export interface RouteMatcher {
   score: number
 }
 
-enum PathScore {
-  Segment = 4, // /a-segment
-  SubSegment = 2, // /multiple-:things-in-one-:segment
-  Static = 3, // /static
-  Dynamic = 2, // /:someId
-  DynamicCustomRegexp = 2.5, // /:someId(\\d+)
-  Wildcard = -1, // /:namedWildcard(.*)
-  SubWildcard = 1, // Wildcard as a subsegment
-  Repeatable = -0.5, // /:w+ or /:w*
-  Strict = 0.5, // when options strict: true is passed, as the regex omits \/?
-  CaseSensitive = 0.25, // when options strict: true is passed, as the regex omits \/?
-  Optional = -4, // /:w? or /:w*
-  SubOptional = -0.1, // optional inside a subsegment /a-:w? or /a-:w*
-  Root = 1, // just /
+const enum PathScore {
+  _multiplier = 10,
+  Segment = 4 * _multiplier, // /a-segment
+  SubSegment = 2 * _multiplier, // /multiple-:things-in-one-:segment
+  Static = 3 * _multiplier, // /static
+  Dynamic = 2 * _multiplier, // /:someId
+  DynamicCustomRegexp = 2.5 * _multiplier, // /:someId(\\d+)
+  Wildcard = -1 * _multiplier, // /:namedWildcard(.*)
+  SubWildcard = 1 * _multiplier, // Wildcard as a subsegment
+  Repeatable = -0.5 * _multiplier, // /:w+ or /:w*
+  Strict = 0.7 * _multiplier, // when options strict: true is passed, as the regex omits \/?
+  CaseSensitive = 0.25 * _multiplier, // when options strict: true is passed, as the regex omits \/?
+  Optional = -4 * _multiplier, // /:w? or /:w*
+  SubOptional = -0.1 * _multiplier, // optional inside a subsegment /a-:w? or /a-:w*
+  Root = 1 * _multiplier, // just /
 }
 
 export function createRouteMatcher(

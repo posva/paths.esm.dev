@@ -27,14 +27,18 @@ function decodePathOptions(
   return {
     applyOptions: values[0],
     options: {
-      strict: values[1],
-      sensitive: values[2],
+      strict: !!values[1],
+      sensitive: !!values[2],
     },
   }
 }
 
-function encodePaths(paths: PathToRank[]): string {
-  let str = ''
+function encodePathsAndOptions(
+  paths: PathToRank[],
+  options: RequiredPathOptions
+): string {
+  let str = encodePathOptions(false, options) + OPTIONS_DELIMITER
+
   for (const path of paths) {
     str +=
       encodePathOptions(path.applyOptions, path.options) +
@@ -46,8 +50,18 @@ function encodePaths(paths: PathToRank[]): string {
   return str
 }
 
-function decodePaths(encodedPaths: string): PathToRank[] {
-  return encodedPaths.split('\n').map((encodedPath) => {
+function decodePathsAndOptions(
+  encodedPathsAndOptions: string
+): { paths: PathToRank[]; options: RequiredPathOptions } {
+  // debugger
+  const globalOptionsEnd = encodedPathsAndOptions.indexOf(OPTIONS_DELIMITER)
+  const { options } = decodePathOptions(
+    encodedPathsAndOptions.slice(0, globalOptionsEnd)
+  )
+
+  const encodedPaths = encodedPathsAndOptions.slice(globalOptionsEnd + 1)
+
+  const paths = encodedPaths.split('\n').map((encodedPath) => {
     const optionsEnd = encodedPath.indexOf(OPTIONS_DELIMITER)
     const { applyOptions, options } = decodePathOptions(
       encodedPath.slice(0, optionsEnd)
@@ -59,12 +73,23 @@ function decodePaths(encodedPaths: string): PathToRank[] {
       options,
     }
   })
+
+  return { paths, options }
 }
 
-export function compressPaths(paths: PathToRank[]): string {
-  return encode64(LZString.compress(encodePaths(paths.filter((p) => p.path))))
+export function compressPaths(
+  paths: PathToRank[],
+  options: RequiredPathOptions
+): string {
+  return encode64(
+    LZString.compress(
+      encodePathsAndOptions(paths.filter((p) => p.path), options)
+    )
+  )
 }
 
-export function decompressPaths(paths: string): PathToRank[] {
-  return decodePaths(LZString.decompress(decode64(paths)))
+export function decompressPaths(
+  paths: string
+): { paths: PathToRank[]; options: RequiredPathOptions } {
+  return decodePathsAndOptions(LZString.decompress(decode64(paths)))
 }
