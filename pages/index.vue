@@ -78,26 +78,20 @@
                 :key="i"
                 :path="path"
                 :active="selectedEntry === path.path"
-                class="p-2"
+                @enter="focusPathEntry(i + 1)"
+                class="p-2 path-entry"
               />
               <hr :key="'hr' + i" class="bg-gray-400 h-px my-2" />
             </template>
 
             <button
+              type="button"
               class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2
             px-4 border border-gray-400 rounded shadow mt-6 mb-2 block
             sm:inline-block w-full lg:w-auto"
               @click="exportPaths"
             >
-              Copy path list to clipboard
-            </button>
-            <button
-              class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2
-            px-4 border border-gray-400 rounded shadow mb-2 block
-            sm:inline-block w-full lg:w-auto"
-              @click="importPaths"
-            >
-              Import path list
+              Copy Share Link
             </button>
             <button
               type="reset"
@@ -162,6 +156,7 @@ import Component from 'vue-class-component'
 import pathToRegexp from 'path-to-regexp'
 import copy from 'copy-text-to-clipboard'
 import { PathToRank } from './types'
+import { compressPaths, decompressPaths } from './encode-data'
 import { createRouteMatcher } from '~/api/path-rank'
 import PathEntry from '~/components/PathEntry.vue'
 import RouteMatcher from '~/components/RouteMatcher.vue'
@@ -174,15 +169,20 @@ function createPathEntry(path = ''): PathToRank {
   }
 }
 
+const defaultPaths = [
+  createPathEntry('/home'),
+  createPathEntry('/:page'),
+  createPathEntry(),
+]
+
+const defaultEncodedPaths = compressPaths(defaultPaths)
+
 @Component({
   components: { PathEntry, RouteMatcher },
 })
 export default class App extends Vue {
-  paths: PathToRank[] = [
-    createPathEntry('/home'),
-    createPathEntry('/:page'),
-    createPathEntry(),
-  ]
+  lastEncodedPaths: string = ''
+  paths: PathToRank[] = []
   selectedEntry: string | null = null
   route: string = ''
 
@@ -223,6 +223,30 @@ export default class App extends Vue {
   }
 
   created() {
+    this.$watch(
+      '$route.query.p',
+      (paths: string) => {
+        if (paths && this.lastEncodedPaths !== paths) {
+          try {
+            this.paths = decompressPaths(paths)
+            this.lastEncodedPaths = paths
+          } catch (error) {
+            // TODO: toast?
+            console.error(error)
+          }
+        }
+      },
+      { immediate: true }
+    )
+
+    if (!this.paths.length) {
+      this.paths = defaultPaths
+      this.lastEncodedPaths = defaultEncodedPaths
+    }
+  }
+
+  // we don't need the watchers during SSR
+  mounted() {
     this.$watch('beforeLastPathEntry.path', (path) => {
       if (!path && this.paths.length > 2 && !this.lastPathEntry.path) {
         this.paths.pop()
@@ -234,20 +258,34 @@ export default class App extends Vue {
         this.paths.push(createPathEntry())
       }
     })
+
+    this.$watch(
+      'paths',
+      (paths: PathToRank[]) => {
+        try {
+          const p = compressPaths(paths)
+          if (p === this.lastEncodedPaths) return
+          // avoid recursive setting
+          this.lastEncodedPaths = p
+          this.$router.push({ query: { p } })
+        } catch (error) {
+          // TODO: toast?
+          console.error(error)
+        }
+      },
+      { deep: true, immediate: true }
+    )
   }
 
   exportPaths() {
-    copy(JSON.stringify(this.paths))
+    copy(window.location.href)
   }
 
-  importPaths() {
-    const json = window.prompt('Paste the JSON list of paths here')
-    try {
-      if (!json) return
-      this.paths = JSON.parse(json)
-    } catch (error) {
-      console.error('Failed parsing JSON', json)
-    }
+  focusPathEntry(i: number) {
+    this.$el
+      .querySelectorAll('.path-entry')
+      [i].querySelector('input')!
+      .focus()
   }
 }
 </script>
