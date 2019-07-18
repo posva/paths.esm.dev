@@ -15,6 +15,8 @@
       type="text"
       placeholder="/users/:id"
       @keypress.enter="$emit('enter')"
+      @focus="$emit('focus')"
+      @blur="$emit('blur')"
     />
     <fieldset
       v-if="path.path"

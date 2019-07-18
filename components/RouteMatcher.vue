@@ -4,7 +4,7 @@
     tabindex="0"
     class="rounded border-2 px-2 py-1 hover:bg-gray-200"
     :class="classes"
-    :aria-multiselectable="isActive"
+    :aria-multiselectable="isMatching"
   >
     <h2>
       <span class="font-bold bg-gray-400 px-1 inline-block rounded">{{
@@ -29,6 +29,7 @@ import Component from 'vue-class-component'
 @Component({
   props: {
     matcher: Object,
+    active: Boolean,
     currentLocation: String,
   },
 })
@@ -38,16 +39,18 @@ export default class RouteMatcher extends Vue {
     return this.matcher instanceof Error
   }
 
-  get isActive() {
+  get isMatching() {
     // @ts-ignore
     return !this.isError && this.matcher.re.test(this.currentLocation)
   }
 
   get classes() {
     return {
-      'border-blue-300': !this.isActive,
-      'border-green-300': this.isActive,
-      'bg-green-100': this.isActive,
+      'border-blue-300': !this.isMatching,
+      'border-green-300': this.isMatching,
+      'bg-green-100': this.isMatching,
+      // @ts-ignore
+      'bg-gray-200': !this.isMatching && this.active,
     }
   }
 }

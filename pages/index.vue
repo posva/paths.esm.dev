@@ -78,6 +78,8 @@
                 :key="i"
                 :path="path"
                 :active="selectedEntry === path.path"
+                @focus="selectedEntry = path.path"
+                @blur="selectedEntry = null"
                 @enter="focusPathEntry(i + 1)"
                 class="p-2 path-entry"
               />
@@ -116,8 +118,8 @@
             class="mb-2"
             :matcher="matcher"
             :current-location="route"
+            :active="selectedEntry === matcher.path"
             @focus.native.passive="selectedEntry = matcher.path"
-            @blur.native.passive="selectedEntry = null"
             @mouseover.native.passive="selectedEntry = matcher.path"
             @mouseleave.native.passive="selectedEntry = null"
           />
