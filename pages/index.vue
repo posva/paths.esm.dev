@@ -86,12 +86,13 @@
 
             <button
               type="button"
+              :disabled="isLinkCopied"
               class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2
             px-4 border border-gray-400 rounded shadow mt-6 mb-2 block
             sm:inline-block w-full lg:w-auto"
               @click="exportPaths"
             >
-              Copy Share Link
+              {{ copyButtonText }}
             </button>
             <button
               type="reset"
@@ -185,6 +186,7 @@ export default class App extends Vue {
   paths: PathToRank[] = []
   selectedEntry: string | null = null
   route: string = ''
+  isLinkCopied = false
 
   globalOptions: pathToRegexp.RegExpOptions = {
     strict: false,
@@ -214,6 +216,10 @@ export default class App extends Vue {
       .sort((a, b) => b.score - a.score)
   }
 
+  get copyButtonText() {
+    return this.isLinkCopied ? 'Copied!' : 'Copy Share link'
+  }
+
   reset() {
     this.paths = [
       createPathEntry('/home'),
@@ -231,7 +237,6 @@ export default class App extends Vue {
             this.paths = decompressPaths(paths)
             this.lastEncodedPaths = paths
           } catch (error) {
-            // TODO: toast?
             console.error(error)
           }
         }
@@ -269,7 +274,6 @@ export default class App extends Vue {
           this.lastEncodedPaths = p
           this.$router.push({ query: { p } })
         } catch (error) {
-          // TODO: toast?
           console.error(error)
         }
       },
@@ -279,6 +283,10 @@ export default class App extends Vue {
 
   exportPaths() {
     copy(window.location.href)
+    this.isLinkCopied = true
+    setTimeout(() => {
+      this.isLinkCopied = false
+    }, 1000)
   }
 
   focusPathEntry(i: number) {

@@ -2,9 +2,6 @@ import NuxtConfiguration from '@nuxt/config'
 
 const config: NuxtConfiguration = {
   mode: 'universal',
-  /*
-   ** Headers of the page
-   */
   head: {
     title: 'Vue Router Path Ranker',
     meta: [
@@ -38,40 +35,18 @@ const config: NuxtConfiguration = {
       { rel: 'manifest', href: 'site.webmanifest' },
     ],
   },
-  /*
-   ** Customize the progress-bar color
-   */
-  loading: { color: '#fff' },
-  /*
-   ** Global CSS
-   */
-  css: ['~/assets/css/tailwind.css'],
-  /*
-   ** Plugins to load before mounting the App
-   */
-  plugins: [],
-  /*
-   ** Nuxt.js modules
-   */
-  modules: [
-    // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios',
-  ],
 
-  /*
-   ** Axios module configuration
-   ** See https://axios.nuxtjs.org/options
-   */
-  axios: {},
-  /*
-   ** Build configuration
-   */
+  loading: { color: '#90cdf4' },
+
+  css: ['~/assets/css/tailwind.css'],
+
   build: {
     postcss: {
       plugins: {
         tailwindcss: './tailwind.config.js',
       },
     },
+    // doesn't seem to work, maybe because TS?
     // babel: {
     //   presets: [
     //     [
@@ -87,7 +62,6 @@ const config: NuxtConfiguration = {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {},
   },
 }
 
