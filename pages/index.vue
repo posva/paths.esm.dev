@@ -26,6 +26,15 @@
         The number in a box that looks like this
         <span class="font-bold bg-gray-400 px-1 inline-block rounded">5</span>
         is the score of the path.
+        <br />
+        If you found a ranking that seems wrong, please share the URL with me by
+        DM on
+        <a
+          class="text-blue-600 font-bold hover:underline"
+          href="https://twitter.com/posva"
+          >Twitter</a
+        >
+        or Discord.
       </p>
 
       <div
