@@ -52,18 +52,18 @@ const config: NuxtConfiguration = {
         tailwindcss: './tailwind.config.js',
       },
     },
-    babel: {
-      presets: [
-        [
-          '@nuxt/babel-preset-app',
-          {
-            targets: {
-              browsers: ['last 1 version', 'not dead', '> 1%'],
-            },
-          },
-        ],
-      ],
-    },
+    // babel: {
+    //   presets: [
+    //     [
+    //       '@nuxt/babel-preset-app',
+    //       {
+    //         targets: {
+    //           browsers: ['last 1 version', 'not dead', '> 1%'],
+    //         },
+    //       },
+    //     ],
+    //   ],
+    // },
     /*
      ** You can extend webpack config here
      */
