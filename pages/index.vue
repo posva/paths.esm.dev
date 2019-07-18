@@ -290,10 +290,12 @@ export default class App extends Vue {
   }
 
   focusPathEntry(i: number) {
-    this.$el
-      .querySelectorAll('.path-entry')
-      [i].querySelector('input')!
-      .focus()
+    const input = this.$el.querySelectorAll('.path-entry input[type="text"]')[
+      i
+    ] as HTMLElement
+
+    if (input) input.focus()
+    else (document.activeElement as HTMLElement).blur()
   }
 }
 </script>
