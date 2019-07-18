@@ -38,7 +38,6 @@ const config: NuxtConfiguration = {
     '@nuxtjs/axios',
   ],
 
-  devModules: [['@nuxtjs/eslint-module', { emitWarning: true }]],
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
@@ -54,11 +53,16 @@ const config: NuxtConfiguration = {
       },
     },
     babel: {
-      presets: [['@nuxt/babel-preset-app', {
-        targets: {
-          browsers: ['last 1 version', 'not dead', '> 1%']
-        }
-      }]]
+      presets: [
+        [
+          '@nuxt/babel-preset-app',
+          {
+            targets: {
+              browsers: ['last 1 version', 'not dead', '> 1%'],
+            },
+          },
+        ],
+      ],
     },
     /*
      ** You can extend webpack config here
