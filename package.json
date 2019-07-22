@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "copy-text-to-clipboard": "^2.1.0",
+    "json5": "^2.1.0",
     "lz-string": "^1.4.4",
     "nuxt": "^2.0.0",
     "path-to-regexp": "^3.0.0",
@@ -20,6 +21,7 @@
   },
   "devDependencies": {
     "@nuxt/typescript": "^2.8.1",
+    "@types/json5": "^0.0.30",
     "nodemon": "^1.18.9",
     "prettier": "^1.16.4",
     "tailwindcss": "^1.0.0",

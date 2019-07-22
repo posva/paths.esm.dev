@@ -106,6 +106,15 @@
               {{ copyButtonText }}
             </button>
             <button
+              type="button"
+              class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2
+            px-4 border border-gray-400 rounded shadow mt-6 mb-2 block
+            sm:inline-block w-full lg:w-auto"
+              @click="() => $refs.importModal.open()"
+            >
+              Import from <code>routes</code> array
+            </button>
+            <button
               type="reset"
               class="bg-red-500 hover:bg-red-700 text-white
             hover:text-gray-100 font-semibold py-2 px-4 border border-gray-400
@@ -138,8 +147,7 @@
             <input
               id="tester.check-path"
               autocomplete="off"
-              autocorrect="off"
-              autocapitalize="off"
+              autocapitalize="none"
               spellcheck="false"
               v-model="route"
               class="block bg-white focus:outline-0 focus:shadow-outline border border-gray-300
@@ -159,6 +167,7 @@
         2019 ©
       </footer>
     </main>
+    <ImportModal ref="importModal"></ImportModal>
   </div>
 </template>
 
@@ -172,6 +181,7 @@ import { compressPaths, decompressPaths } from '~/api/encode-data'
 import { createRouteMatcher } from '~/api/path-rank'
 import PathEntry from '~/components/PathEntry.vue'
 import RouteMatcher from '~/components/RouteMatcher.vue'
+import ImportModal from '~/components/ImportModal.vue'
 
 function createPathEntry(path = ''): PathToRank {
   return {
@@ -194,7 +204,7 @@ const defaultOptions: RequiredPathOptions = {
 const defaultEncodedPaths = compressPaths(defaultPaths, defaultOptions)
 
 @Component({
-  components: { PathEntry, RouteMatcher },
+  components: { PathEntry, RouteMatcher, ImportModal },
 })
 export default class App extends Vue {
   lastEncodedPaths: string = ''
