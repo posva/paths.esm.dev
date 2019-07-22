@@ -149,11 +149,6 @@ export default class ImportModal extends Vue {
       this.error = error
     }
   }
-
-  mounted() {
-    // during testing
-    this.open()
-  }
 }
 
 function addRouteToPaths(
