@@ -107,7 +107,7 @@ bg-white hover:bg-gray-100 py-1
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import copy from 'copy-text-to-clipboard'
+import { copy } from '~/api/copy.ts'
 import JSON5 from 'json5'
 import { PathToRank } from '../api/types'
 

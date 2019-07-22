@@ -1,5 +1,7 @@
 import NuxtConfiguration from '@nuxt/config'
 
+const features = ['Array.from'].join('%2C')
+
 const config: NuxtConfiguration = {
   mode: 'universal',
   head: {
@@ -33,6 +35,13 @@ const config: NuxtConfiguration = {
         href: '/favicon-16x16.png',
       },
       { rel: 'manifest', href: 'site.webmanifest' },
+    ],
+    script: [
+      {
+        src: `https://polyfill.io/v3/polyfill.min.js?features=${features}`,
+        body: true,
+        type: 'application/javascript',
+      },
     ],
   },
 

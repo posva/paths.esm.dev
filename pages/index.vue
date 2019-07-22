@@ -177,7 +177,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import pathToRegexp from 'path-to-regexp'
-import copy from 'copy-text-to-clipboard'
+import { copy } from '~/api/copy.ts'
 import { PathToRank, RequiredPathOptions } from '~/api/types'
 import { compressPaths, decompressPaths } from '~/api/encode-data'
 import { createRouteMatcher } from '~/api/path-rank'
