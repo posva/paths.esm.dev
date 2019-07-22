@@ -240,25 +240,50 @@ export default class App extends Vue {
     ]
   }
 
+  updateStateFromQuery(): void {
+    const { p } = this.$route.query
+    const encodedPaths = Array.isArray(p) ? p[0] : p
+    console.log('updateFromQuery', encodedPaths)
+
+    if (encodedPaths && this.lastEncodedPaths !== encodedPaths) {
+      try {
+        const { paths, options } = decompressPaths(encodedPaths)
+        this.paths = paths
+        this.globalOptions = options
+        this.lastEncodedPaths = encodedPaths
+      } catch (error) {
+        console.error('Failed decompressing paths', error)
+        // invalid parameter, reset to default
+        // TODO: there seems to be something breaking on SSR but not on generation
+        this.paths = defaultPaths
+        // force watcher
+        this.lastEncodedPaths = ''
+      }
+    }
+  }
+
+  updateRouteQueryFromState() {
+    try {
+      const p = compressPaths(this.paths, this.globalOptions)
+      if (p === this.lastEncodedPaths) return
+      // avoid recursive setting
+      this.lastEncodedPaths = p
+      this.$router.push({ query: { p } })
+    } catch (error) {
+      console.error('Failed compressing paths', error)
+      console.error(error)
+    }
+  }
+
   created() {
     // this watcher must be triggered automatically to allow SSR
-    this.$watch(
-      '$route.query.p',
-      (encodedPaths: string) => {
-        if (encodedPaths && this.lastEncodedPaths !== encodedPaths) {
-          try {
-            const { paths, options } = decompressPaths(encodedPaths)
-            this.paths = paths
-            this.globalOptions = options
-            this.lastEncodedPaths = encodedPaths
-          } catch (error) {
-            console.error(error)
-          }
-        }
-      },
-      { immediate: true }
-    )
+    this.$watch('$route.query.p', this.updateStateFromQuery, {
+      // don't trigger the watcher on client because it would trigger an SSR mismatch
+      // since we only do a generate, we get a hardcoded version of the paths (defaultPaths)
+      immediate: process.server,
+    })
 
+    console.log('done', this.paths, this.lastEncodedPaths)
     if (!this.paths.length) {
       this.paths = defaultPaths
       this.lastEncodedPaths = defaultEncodedPaths
@@ -267,6 +292,11 @@ export default class App extends Vue {
 
   // we don't need the watchers during SSR
   mounted() {
+    // manually call the function on client to prevent SSR mismatch when a query is provided
+    console.log(process.static, process.server, process.client)
+    if (this.lastEncodedPaths !== this.$route.query.p)
+      this.updateStateFromQuery()
+
     // ensure the route query is present since we generate instead of serving the app
     if (!this.$route.query.p)
       this.$router.push({ query: { p: this.lastEncodedPaths } })
@@ -283,20 +313,11 @@ export default class App extends Vue {
       }
     })
 
-    const updateRouteQuery = () => {
-      try {
-        const p = compressPaths(this.paths, this.globalOptions)
-        if (p === this.lastEncodedPaths) return
-        // avoid recursive setting
-        this.lastEncodedPaths = p
-        this.$router.push({ query: { p } })
-      } catch (error) {
-        console.error(error)
-      }
-    }
-
-    this.$watch('globalOptions', updateRouteQuery, { deep: true })
-    this.$watch('paths', updateRouteQuery, { deep: true, immediate: true })
+    this.$watch('globalOptions', this.updateRouteQueryFromState, { deep: true })
+    this.$watch('paths', this.updateRouteQueryFromState, {
+      deep: true,
+      immediate: true,
+    })
   }
 
   exportPaths() {
