@@ -167,7 +167,7 @@
         2019 ©
       </footer>
     </main>
-    <ImportModal ref="importModal"></ImportModal>
+    <ImportModal ref="importModal" @paths="paths = $event"></ImportModal>
   </div>
 </template>
 
@@ -253,7 +253,6 @@ export default class App extends Vue {
   updateStateFromQuery(): void {
     const { p } = this.$route.query
     const encodedPaths = Array.isArray(p) ? p[0] : p
-    console.log('updateFromQuery', encodedPaths)
 
     if (encodedPaths && this.lastEncodedPaths !== encodedPaths) {
       try {

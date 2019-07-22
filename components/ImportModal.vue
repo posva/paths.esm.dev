@@ -93,6 +93,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import copy from 'copy-text-to-clipboard'
 import JSON5 from 'json5'
+import { PathToRank } from '../api/types'
 
 @Component({})
 export default class ImportModal extends Vue {
@@ -104,6 +105,7 @@ export default class ImportModal extends Vue {
     // disallow scroll
     document.body.style.overflow = 'hidden'
     this.isOpen = true
+    this.routes = ''
     await this.$nextTick()
     // @ts-ignore
     this.$refs.modal.focus()
@@ -111,7 +113,7 @@ export default class ImportModal extends Vue {
 
   close() {
     // reset scroll
-    delete document.body.style.overflow
+    document.body.style.overflow = 'auto'
     this.isOpen = false
   }
 
@@ -125,22 +127,87 @@ export default class ImportModal extends Vue {
 
   async importRoutes(routes: string) {
     this.error = null
+    // let routeConfig: any[] | null = null
     try {
       const routeConfig = JSON5.parse(routes)
-      console.log(routeConfig)
+      if (!Array.isArray(routeConfig))
+        throw new Error('You must provide an Array')
+
+      if (!routeConfig.length) throw new Error('The array cannot be empty')
+
+      // transform into paths
+      const paths: PathToRank[] = []
+
+      for (let i = 0; i < routeConfig.length; i++) {
+        addRouteToPaths(routeConfig[i], null, String(i), paths)
+      }
+
+      this.$emit('paths', paths)
+      this.close()
     } catch (error) {
       console.error('Failed parsing', error)
-      this.handleError(error)
+      this.error = error
     }
-  }
-
-  handleError(error) {
-    this.error = error
   }
 
   mounted() {
     // during testing
     this.open()
+  }
+}
+
+function addRouteToPaths(
+  route: any,
+  parent: PathToRank | null,
+  parentIndex: string,
+  paths: PathToRank[]
+): void {
+  if (!route || typeof route !== 'object')
+    throw new Error(
+      `Invalid route at position ${parentIndex}: Expected an Object, got "${JSON5.stringify(
+        route
+      )}"`
+    )
+
+  if (!route.path || typeof route.path !== 'string')
+    throw new Error(
+      `Invalid route at position ${parentIndex}: Property "path" must be a non-epmty string`
+    )
+
+  // TODO: handle children
+
+  const sensitive: boolean =
+    'caseSensitive' in route
+      ? route.caseSensitive
+      : route.pathToRegexpOptions && route.pathToRegexpOptions.sensitive
+  const strict: boolean =
+    'strict' in route
+      ? route.strict
+      : route.pathToRegexpOptions && route.pathToRegexpOptions.strict
+
+  const routeOptions = { strict, sensitive }
+  if (strict !== null) delete routeOptions.strict
+  if (sensitive !== null) delete routeOptions.sensitive
+
+  const options = Object.assign({}, parent ? parent.options : {}, routeOptions)
+
+  const path: PathToRank = {
+    path: (parent ? parent.path : '') + route.path,
+    options,
+    applyOptions: false,
+  }
+
+  paths.push(path)
+
+  if (route.children) {
+    if (!Array.isArray(route.children))
+      throw new Error(
+        `Invalid route at position ${parentIndex}: Property "children" must be an array`
+      )
+
+    for (let i = 0; i < route.children.length; i++) {
+      addRouteToPaths(route.children[i], path, `${parentIndex}.${i}`, paths)
+    }
   }
 }
 </script>
