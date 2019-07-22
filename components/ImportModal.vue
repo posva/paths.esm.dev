@@ -179,7 +179,7 @@ function addRouteToPaths(
       )}"`
     )
 
-  if (!route.path || typeof route.path !== 'string')
+  if ((!parent && !route.path) || typeof route.path !== 'string')
     throw new Error(
       `Invalid route at position ${parentIndex}: Property "path" must be a non-epmty string`
     )
