@@ -38,14 +38,9 @@ const config: NuxtConfiguration = {
 
   loading: { color: '#90cdf4' },
 
-  css: ['~/assets/css/tailwind.css'],
+  devModules: ['@nuxtjs/tailwindcss'],
 
   build: {
-    postcss: {
-      plugins: {
-        tailwindcss: './tailwind.config.js',
-      },
-    },
     // doesn't seem to work, maybe because TS?
     // babel: {
     //   presets: [

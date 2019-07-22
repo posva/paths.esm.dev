@@ -94,6 +94,7 @@ bg-white hover:bg-gray-100 py-1
             hover:text-gray-100 font-semibold py-2
             px-4 border border-gray-400 rounded shadow mt-6 mb-2 block
             w-full md:w-auto ml-1"
+            @click="close"
           >
             Close
           </button>
