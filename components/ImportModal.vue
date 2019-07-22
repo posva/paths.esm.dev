@@ -180,7 +180,7 @@ function addRouteToPaths(
       )}"`
     )
 
-  if ((!parent && !route.path) || typeof route.path !== 'string')
+  if ((parent && !route.path) || typeof route.path !== 'string')
     throw new Error(
       `Invalid route at position ${parentIndex}: Property "path" must be a non-epmty string`
     )
@@ -203,7 +203,12 @@ function addRouteToPaths(
   const options = Object.assign({}, parent ? parent.options : {}, routeOptions)
 
   const path: PathToRank = {
-    path: (parent ? parent.path : '') + route.path,
+    path:
+      // if there is a trailing slash, treat as root
+      // otherwise prepend the parent path with a slash at the end of it
+      route.path.charAt(0) === '/'
+        ? route.path
+        : (parent ? parent.path.replace(/\/*$/, '/') : '') + route.path,
     options,
     applyOptions: false,
   }
