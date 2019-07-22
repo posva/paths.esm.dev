@@ -1,6 +1,6 @@
 <template>
   <div
-    class="modal-container absolute left-0 top-0 w-screen h-screen flex
+    class="modal-container fixed left-0 top-0 w-screen h-screen flex
   justify-center items-center"
     v-if="isOpen"
     @click="closeIfOut"
