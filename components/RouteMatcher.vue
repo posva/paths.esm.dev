@@ -2,7 +2,7 @@
   <section
     v-if="!isError"
     tabindex="0"
-    class="rounded border-2 px-2 py-1 hover:bg-gray-200"
+    class="rounded border-2 px-2 py-1 hover:bg-gray-200 overflow-auto"
     :class="classes"
     :aria-multiselectable="isMatching"
   >

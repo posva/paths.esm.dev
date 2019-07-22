@@ -38,7 +38,7 @@
       </p>
 
       <div
-        class="flex items-strecth content-around justify-around flex-col md:flex-row"
+        class="flex items-strecth content-around justify-around flex-col lg:flex-row"
       >
         <article class="flex-1 px-1">
           <header>
@@ -125,7 +125,9 @@
           </form>
         </article>
 
-        <article class="flex-1 mt-4 md:mt-0 text-left px-1">
+        <article
+          class="flex-1 mt-4 md:mt-0 text-left px-1 route-matcher-container"
+        >
           <header>
             <h3 class="font-serif text-xl mb-8">Ranking results</h3>
           </header>
@@ -344,3 +346,12 @@ export default class App extends Vue {
   }
 }
 </script>
+
+<style scoped>
+@media (min-width: 1024px) {
+  .route-matcher-container {
+    max-width: 50%;
+  }
+}
+</style>
+

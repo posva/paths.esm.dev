@@ -6,8 +6,9 @@
     @click="closeIfOut"
   >
     <section
-      class="bg-white min-h-20 max-w-xl md:p-6 p-2 md:m-0 m-2 rounded border-gray
+      class="bg-white min-h-20 w-64 sm:p-6 p-2 sm:m-0 m-2 rounded border-gray
     border-2"
+      style="width: 36rem;"
       tabindex="-1"
       ref="modal"
     >
@@ -20,18 +21,21 @@
         <code>new Router()</code>. We use <code>json5</code> to parse it, so if
         it contains any extra Javascript like <b>navigation guards</b>(eg:
         <code>beforeEnter</code>), <b>inlined dynamic imports</b>(eg:
-        <code>import('./Login.vue')</code>). If you are using <i>Nuxt</i>, you
-        don't have access to the array itself, or it's too difficult to copy,
-        you can open your application in development mode 👩‍💻, open the
-        <a
-          href="https://github.com/vuejs/vue-devtools"
-          target="_blank"
-          class="text-blue-500 font-bold underline"
-          >Vue Devtools</a
-        >, select any component in the component panel (the one opened by
-        default) and paste this code into the console:
+        <code>import('./Login.vue')</code>).
+        <span class="hidden sm:block"
+          >If you are using <i>Nuxt</i>, you don't have access to the array
+          itself, or it's too difficult to copy, you can open your application
+          in development mode 👩‍💻, open the
+          <a
+            href="https://github.com/vuejs/vue-devtools"
+            target="_blank"
+            class="text-blue-500 font-bold underline"
+            >Vue Devtools</a
+          >, select any component in the component panel (the one opened by
+          default) and paste this code into the console:</span
+        >
 
-        <span class="relative m-0 block">
+        <span class="relative m-0 block hidden sm:block">
           <pre
             class="my-2 rounded border p-4 pr-2 bg-gray-100 text-blue-600
           text-sm"
@@ -75,14 +79,25 @@ bg-white hover:bg-gray-100 py-1
           placeholder="Paste here your routes array"
         ></textarea>
 
-        <button
-          type="submit"
-          class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2
+        <div class="flex justify-between">
+          <button
+            type="submit"
+            class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2
             px-4 border border-gray-400 rounded shadow mt-6 mb-2 block
-            sm:inline-block w-full lg:w-auto"
-        >
-          Import
-        </button>
+            w-full md:w-auto mr-1"
+          >
+            Import
+          </button>
+          <button
+            type="button"
+            class="bg-red-500 hover:bg-red-700 text-white
+            hover:text-gray-100 font-semibold py-2
+            px-4 border border-gray-400 rounded shadow mt-6 mb-2 block
+            w-full md:w-auto ml-1"
+          >
+            Close
+          </button>
+        </div>
       </form>
     </section>
   </div>
