@@ -152,7 +152,7 @@ export default class ImportModal extends Vue {
       if (!routeConfig.length) throw new Error('The array cannot be empty')
 
       // transform into paths
-      const paths: PathToRank[] = []
+      const paths: ParsedPathToRank[] = []
 
       for (let i = 0; i < routeConfig.length; i++) {
         addRouteToPaths(routeConfig[i], null, String(i), paths)
@@ -167,12 +167,21 @@ export default class ImportModal extends Vue {
   }
 }
 
+/**
+ * Testing string
+ * [{ path: '/one', alias: ['/one2', '/one3'], children: [{ path: 'two', children: [{ path: 'three'},{ path: '/root', alias: ['/root2', 'three2'], children: [{ path: 'four'}] }]}]}]
+ */
+
+interface ParsedPathToRank extends PathToRank {
+  parentPath: string | null
+}
+
 function addRouteToPaths(
   route: any,
   parent: PathToRank | null,
   parentIndex: string,
-  paths: PathToRank[]
-): void {
+  paths: ParsedPathToRank[]
+): PathToRank {
   if (!route || typeof route !== 'object')
     throw new Error(
       `Invalid route at position ${parentIndex}: Expected an Object, got "${JSON5.stringify(
@@ -202,7 +211,7 @@ function addRouteToPaths(
 
   const options = Object.assign({}, parent ? parent.options : {}, routeOptions)
 
-  const path: PathToRank = {
+  const path: ParsedPathToRank = {
     path:
       // if there is a trailing slash, treat as root
       // otherwise prepend the parent path with a slash at the end of it
@@ -210,10 +219,39 @@ function addRouteToPaths(
         ? route.path
         : (parent ? parent.path.replace(/\/*$/, '/') : '') + route.path,
     options,
+    parentPath: parent && parent.path,
     applyOptions: false,
   }
 
-  paths.push(path)
+  // ensure we do not add duplicates, this is necessary because of aliases with children
+  // if the child is a root path like /root instead of root, it will be added twice
+  if (
+    !paths.find(
+      (p) => p.path === path.path && p.parentPath === (parent && parent.path)
+    )
+  ) {
+    paths.push(path)
+  } else {
+    // we can also stop because we have already added any children
+    return path
+  }
+
+  // save the alias as parents to generate all possible children
+  const parents: PathToRank[] = [path]
+
+  if (route.alias) {
+    const aliases = Array.isArray(route.alias) ? route.alias : [route.alias]
+    for (const alias of aliases) {
+      parents.push(
+        addRouteToPaths(
+          { path: alias },
+          parent,
+          `${parentIndex}.${alias}`,
+          paths
+        )
+      )
+    }
+  }
 
   if (route.children) {
     if (!Array.isArray(route.children))
@@ -221,10 +259,19 @@ function addRouteToPaths(
         `Invalid route at position ${parentIndex}: Property "children" must be an array`
       )
 
-    for (let i = 0; i < route.children.length; i++) {
-      addRouteToPaths(route.children[i], path, `${parentIndex}.${i}`, paths)
+    for (const parent of parents) {
+      for (let i = 0; i < route.children.length; i++) {
+        addRouteToPaths(
+          route.children[i],
+          parent,
+          `${parentIndex}(${parent.path}).${i}`,
+          paths
+        )
+      }
     }
   }
+
+  return path
 }
 </script>
 
