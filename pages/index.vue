@@ -271,7 +271,6 @@ export default class App extends Vue {
       this.$router.push({ query: { p } })
     } catch (error) {
       console.error('Failed compressing paths', error)
-      console.error(error)
     }
   }
 
@@ -283,7 +282,6 @@ export default class App extends Vue {
       immediate: process.server,
     })
 
-    console.log('done', this.paths, this.lastEncodedPaths)
     if (!this.paths.length) {
       this.paths = defaultPaths
       this.lastEncodedPaths = defaultEncodedPaths
@@ -293,7 +291,6 @@ export default class App extends Vue {
   // we don't need the watchers during SSR
   mounted() {
     // manually call the function on client to prevent SSR mismatch when a query is provided
-    console.log(process.static, process.server, process.client)
     if (this.lastEncodedPaths !== this.$route.query.p)
       this.updateStateFromQuery()
 
