@@ -4,20 +4,23 @@
     :class="active && 'bg-blue-100'"
     :aria-selected="active"
   >
-    <input
-      v-model="path.path"
-      autocomplete="off"
-      autocapitalize="none"
-      spellcheck="false"
-      class="block bg-white focus:outline-0 focus:shadow-outline border border-gray-300
+    <label>
+      <span class="sr-only">Path to rank</span>
+      <input
+        v-model="path.path"
+        autocomplete="off"
+        autocapitalize="none"
+        spellcheck="false"
+        class="block bg-white focus:outline-0 focus:shadow-outline border border-gray-300
     rounded-lg py-2 px-4 block w-full appearance-none leading-normal"
-      type="text"
-      placeholder="/users/:id"
-      ref="input"
-      @keypress.enter="$emit('enter')"
-      @focus="$emit('focus')"
-      @blur="$emit('blur')"
-    />
+        type="text"
+        placeholder="/users/:id"
+        ref="input"
+        @keypress.enter="$emit('enter')"
+        @focus="$emit('focus')"
+        @blur="$emit('blur')"
+      />
+    </label>
     <fieldset
       v-if="path.path"
       class="border pl-4 pr-1 pb-2"

@@ -144,10 +144,9 @@
             @mouseleave.native.passive="selectedEntry = null"
           />
 
-          <label for="check-path" class="mt-3 block">
+          <label class="mt-3 block">
             Test against a string location:
             <input
-              id="tester.check-path"
               autocomplete="off"
               autocapitalize="none"
               spellcheck="false"
@@ -177,7 +176,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import pathToRegexp from 'path-to-regexp'
-import { copy } from '~/api/copy.ts'
+import copy from 'clipboard-text'
 import { PathToRank, RequiredPathOptions } from '~/api/types'
 import { compressPaths, decompressPaths } from '~/api/encode-data'
 import { createRouteMatcher } from '~/api/path-rank'

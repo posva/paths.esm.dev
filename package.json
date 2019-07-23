@@ -12,6 +12,8 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "clipboard-text": "^1.0.1",
+    "focus-trap": "^5.0.2",
     "json5": "^2.1.0",
     "lz-string": "^1.4.4",
     "nuxt": "^2.0.0",
