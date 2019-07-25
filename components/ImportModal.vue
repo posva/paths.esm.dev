@@ -5,19 +5,21 @@
     v-if="isOpen"
     @click="closeIfOut"
   >
-    <FocusTrap active>
+    <FocusTrap active :initial-focus="() => $refs.textarea">
+      <!-- NOTE: if we add aria-labeledby and describedby, screen readers repeat the
+      whole thing -->
       <section
         class="bg-white min-h-20 w-64 sm:p-6 p-2 sm:m-0 m-2 rounded border-gray
     border-2"
+        role="dialog"
         style="width: 36rem;"
-        tabindex="-1"
         ref="modal"
       >
-        <h2 class="text-2xl font-serif mb-2">
+        <h2 class="text-2xl font-serif mb-2" id="import-modal-title">
           Import directly from your <code>routes</code> array
         </h2>
 
-        <p class="mb-4">
+        <p class="mb-4" id="import-modal-desc">
           You can copy paste the array of <code>routes</code> passed to
           <code>new Router()</code>. We use <code>json5</code> to parse it, so
           if it contains any extra Javascript like <b>navigation guards</b>(eg:
