@@ -5,7 +5,7 @@
     v-if="isOpen"
     @click="closeIfOut"
   >
-    <FocusTrap active :initial-focus="() => $refs.textarea">
+    <FocusTrap @deactivate="close" :initial-focus="() => $refs.textarea">
       <!-- NOTE: if we add aria-labeledby and describedby, screen readers repeat the
       whole thing -->
       <section
@@ -117,7 +117,7 @@ import Component from 'vue-class-component'
 import copy from 'clipboard-text'
 import JSON5 from 'json5'
 import { PathToRank } from '../api/types'
-import FocusTrap from '~/components/FocusTrap'
+import { FocusTrap } from 'focus-trap-vue'
 
 @Component({
   components: { FocusTrap },
