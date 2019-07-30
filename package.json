@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@nuxt/typescript": "^2.8.1",
-    "@nuxtjs/tailwindcss": "^1.1.0",
+    "@nuxtjs/tailwindcss": "^1.1.1",
     "@types/json5": "^0.0.30",
     "nodemon": "^1.18.9",
     "prettier": "^1.16.4",
