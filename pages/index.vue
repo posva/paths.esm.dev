@@ -278,7 +278,9 @@ export default class App extends Vue {
       if (p === this.lastEncodedPaths) return
       // avoid recursive setting
       this.lastEncodedPaths = p
-      this.$router.push({ query: { p } })
+      // add a hash at the end because some links end with `.` and some programs do not
+      // consider dots as parts of the url (eg: Discord)
+      this.$router.push({ query: { p }, hash: '#' })
     } catch (error) {
       console.error('Failed compressing paths', error)
     }
@@ -306,7 +308,7 @@ export default class App extends Vue {
 
     // ensure the route query is present since we generate instead of serving the app
     if (!this.$route.query.p)
-      this.$router.push({ query: { p: this.lastEncodedPaths } })
+      this.$router.push({ query: { p: this.lastEncodedPaths }, hash: '#' })
 
     this.$watch('beforeLastPathEntry.path', (path) => {
       if (!path && this.paths.length > 2 && !this.lastPathEntry.path) {
