@@ -54,7 +54,7 @@ export function createRouteMatcher(
 
   // special case for root path
   if (tokens.length === 1 && tokens[0] === '/') {
-    score = (PathScore.Segment + PathScore.Root) * PathScore._multiplier
+    score = PathScore.Segment + PathScore.Root
   } else {
     // allows us to group tokens into one single segment
     // it will point to the first token of the current group
