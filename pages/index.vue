@@ -131,7 +131,6 @@
           <header>
             <h3 class="font-serif text-xl mb-8">Ranking results</h3>
           </header>
-          <!-- TODO: add hover to highlight on the left -->
           <RouteMatcher
             v-for="(matcher, i) in matchers"
             :key="i"
@@ -168,6 +167,7 @@
         2019 ©
       </footer>
     </main>
+
     <ImportModal ref="importModal" @paths="paths = $event"></ImportModal>
   </div>
 </template>
@@ -291,7 +291,8 @@ export default class App extends Vue {
     this.$watch('$route.query.p', this.updateStateFromQuery, {
       // don't trigger the watcher on client because it would trigger an SSR mismatch
       // since we only do a generate, we get a hardcoded version of the paths (defaultPaths)
-      immediate: process.server,
+      // in development we are doing SSR so we always need to call updateRouteQueryFromState
+      immediate: process.env.NODE_ENV === 'development' || process.server,
     })
 
     if (!this.paths.length) {
