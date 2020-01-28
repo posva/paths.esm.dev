@@ -6,29 +6,30 @@
   "private": true,
   "scripts": {
     "lint": "yarn prettier -c '{pages,layouts,components}/**/*.vue' '{api,plugins,middleware}/**/*.{ts,js,json}'",
-    "dev": "nuxt",
-    "build": "nuxt build",
-    "start": "nuxt start",
-    "generate": "nuxt generate"
+    "dev": "nuxt-ts",
+    "build": "nuxt-ts build",
+    "start": "nuxt-ts start",
+    "generate": "nuxt-ts generate"
   },
   "dependencies": {
+    "@nuxt/typescript-runtime": "^0.3.8",
     "clipboard-text": "^1.0.1",
-    "focus-trap": "^5.0.2",
-    "focus-trap-vue": "^0.0.1",
-    "json5": "^2.1.0",
+    "focus-trap": "^5.1.0",
+    "focus-trap-vue": "^0.0.4",
+    "json5": "^2.1.1",
     "lz-string": "^1.4.4",
-    "nuxt": "^2.0.0",
+    "nuxt": "^2.11.0",
     "path-to-regexp": "^3.1.0",
-    "ts-node": "^8.3.0"
+    "ts-node": "^8.6.2"
   },
   "devDependencies": {
-    "@nuxt/typescript": "^2.8.1",
-    "@nuxtjs/tailwindcss": "^1.1.2",
+    "@nuxt/typescript-build": "^0.5.6",
+    "@nuxtjs/tailwindcss": "^1.3.1",
     "@types/json5": "^0.0.30",
-    "nodemon": "^1.19.2",
-    "prettier": "^1.16.4",
-    "tailwindcss": "^1.1.2",
-    "typescript": "^3.5.3",
-    "vue-class-component": "^7.1.0"
+    "nodemon": "^2.0.2",
+    "prettier": "^1.19.1",
+    "tailwindcss": "^1.1.4",
+    "typescript": "^3.7.5",
+    "vue-class-component": "^7.2.2"
   }
 }

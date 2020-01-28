@@ -1,8 +1,8 @@
-import NuxtConfiguration from '@nuxt/config'
+import { Configuration } from '@nuxt/types'
 
 const features = ['Array.from'].join('%2C')
 
-const config: NuxtConfiguration = {
+const config: Configuration = {
   mode: 'universal',
   head: {
     title: 'Vue Router Path Ranker',
@@ -50,7 +50,7 @@ const config: NuxtConfiguration = {
 
   loading: { color: '#90cdf4' },
 
-  devModules: ['@nuxtjs/tailwindcss'],
+  buildModules: ['@nuxt/typescript-build', '@nuxtjs/tailwindcss'],
 
   build: {
     // doesn't seem to work, maybe because TS?
