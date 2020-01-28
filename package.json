@@ -19,7 +19,6 @@
     "json5": "^2.1.1",
     "lz-string": "^1.4.4",
     "nuxt": "^2.11.0",
-    "path-to-regexp": "^3.1.0",
     "ts-node": "^8.6.2"
   },
   "devDependencies": {

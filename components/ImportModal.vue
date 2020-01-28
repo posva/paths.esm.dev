@@ -116,7 +116,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import copy from 'clipboard-text'
 import JSON5 from 'json5'
-import { PathToRank } from '../api/types'
+import { PathToRank } from '../api/matcher'
 import { FocusTrap } from 'focus-trap-vue'
 
 @Component({
@@ -146,8 +146,10 @@ export default class ImportModal extends Vue {
   }
 
   copySnippet(event: MouseEvent) {
-    copy('copy(JSON.stringify($vm.$router.options.routes))', this.$refs
-      .modal as Element)
+    copy(
+      'copy(JSON.stringify($vm.$router.options.routes))',
+      this.$refs.modal as Element
+    )
     // @ts-ignore
     if (event.target) event.target.focus()
   }

@@ -132,7 +132,7 @@
             <h3 class="font-serif text-xl mb-8">Ranking results</h3>
           </header>
           <RouteMatcher
-            v-for="(matcher, i) in matchers"
+            v-for="(matcher, i) in pathMatcher.matchers"
             :key="i"
             class="mb-2"
             :matcher="matcher"
@@ -177,12 +177,16 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import pathToRegexp from 'path-to-regexp'
 import copy from 'clipboard-text'
-import { PathToRank, RequiredPathOptions } from '~/api/types'
 import { compressPaths, decompressPaths } from '~/api/encode-data'
-import { createRouteMatcher } from '~/api/path-rank'
+import {
+  createRouterMatcher,
+  PathToRank,
+  RequiredPathParserOptions,
+} from '~/api/matcher'
 import PathEntry from '~/components/PathEntry.vue'
 import RouteMatcher from '~/components/RouteMatcher.vue'
 import ImportModal from '~/components/ImportModal.vue'
+import { PathParserOptions } from '../api/matcher/path-parser-ranker'
 
 function createPathEntry(path = ''): PathToRank {
   return {
@@ -198,7 +202,7 @@ const defaultPaths = [
   createPathEntry(),
 ]
 
-const defaultOptions: RequiredPathOptions = {
+const defaultOptions = {
   strict: false,
   sensitive: false,
 }
@@ -214,7 +218,7 @@ export default class App extends Vue {
   route: string = ''
   isLinkCopied = false
 
-  globalOptions: RequiredPathOptions = defaultOptions
+  globalOptions: RequiredPathParserOptions = defaultOptions
 
   get beforeLastPathEntry() {
     return this.paths[this.paths.length - 2]
@@ -223,20 +227,12 @@ export default class App extends Vue {
     return this.paths[this.paths.length - 1]
   }
 
-  get matchers() {
-    return this.paths
-      .filter(({ path }) => !!path)
-      .map(({ path, options, applyOptions }) => {
-        try {
-          return createRouteMatcher(path, void 0, {
-            ...this.globalOptions,
-            ...(applyOptions ? options : {}),
-          })
-        } catch (error) {
-          return error
-        }
-      })
-      .sort((a, b) => b.score - a.score)
+  get filteredPaths() {
+    return this.paths.filter((path) => path.path.startsWith('/'))
+  }
+
+  get pathMatcher() {
+    return createRouterMatcher(this.filteredPaths, this.globalOptions)
   }
 
   get copyButtonText() {
@@ -254,6 +250,7 @@ export default class App extends Vue {
   updateStateFromQuery(): void {
     const { p } = this.$route.query
     const encodedPaths = Array.isArray(p) ? p[0] : p
+    // debugger
 
     if (encodedPaths && this.lastEncodedPaths !== encodedPaths) {
       try {
