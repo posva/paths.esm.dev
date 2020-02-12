@@ -11,20 +11,20 @@
       <p class="leading-tight text-md mb-6 max-w-3xl pl-4">
         Change paths entries and verify the result on the right. Entries appear
         sorted in <i>descendant</i> score order. You can customize global
-        options and also apply overrides.
-        <br />
-        This uses
+        options and also apply overrides. The syntax is very similar to the one
+        used by
         <a
           href="https://github.com/pillarjs/path-to-regexp"
           class="text-blue-600 font-bold hover:underline"
           >path-to-regexp</a
-        >
-        to parse paths. I invite you to check its documentation to learn how to
-        use custom regexes like <code>/:id(\\d+)</code> and
-        <i>repeatable</i> parameters like <code>/:id+</code>.
+        >. You can check its documentation to learn how to use custom regexes
+        like <code>/:id(\\d+)</code> and <i>repeatable</i> parameters like
+        <code>/:id+</code>.
         <br />
         The number in a box that looks like this
-        <span class="font-bold bg-gray-400 px-1 inline-block rounded">5</span>
+        <span class="font-bold bg-gray-400 px-1 inline-block rounded"
+          >[[80]]</span
+        >
         is the score of the path.
         <br />
         If you found a ranking that seems wrong, please share the URL with me by

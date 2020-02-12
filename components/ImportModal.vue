@@ -205,12 +205,10 @@ function addRouteToPaths(
       )}"`
     )
 
-  if ((parent && !route.path) || typeof route.path !== 'string')
+  if ((!route.path && !parent) || typeof route.path !== 'string')
     throw new Error(
       `Invalid route at position ${parentIndex}: Property "path" must be a non-epmty string`
     )
-
-  // TODO: handle children
 
   const sensitive: boolean =
     'caseSensitive' in route
@@ -280,7 +278,7 @@ function addRouteToPaths(
         addRouteToPaths(
           route.children[i],
           parent,
-          `${parentIndex}(${parent.path}).${i}`,
+          `${parentIndex} "${parent.path}".${i}`,
           paths
         )
       }
