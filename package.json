@@ -1,0 +1,19 @@
+{
+  "name": "vite-tailwind-starter",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "cross-env NODE_ENV=production vite build"
+  },
+  "dependencies": {
+    "tailwindcss": "^1.6.1",
+    "vue": "next",
+    "vue-router": "^4.0.0-beta.4"
+  },
+  "devDependencies": {
+    "@vue/compiler-sfc": "^3.0.0-rc.5",
+    "cross-env": "^7.0.2",
+    "vite": "^1.0.0-rc.4"
+  }
+}
