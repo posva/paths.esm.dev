@@ -594,6 +594,11 @@ cli-spinners@^2.2.0:
   resolved "https://registry.yarnpkg.com/cli-spinners/-/cli-spinners-2.3.0.tgz#0632239a4b5aa4c958610142c34bb7a651fc8df5"
   integrity sha512-Xs2Hf2nzrvJMFKimOR7YR0QwZ8fc0u98kdtwN1eNAZzNQgH3vK2pXzff6GJtKh7S5hoJ87ECiAiZFS2fb5Ii2w==
 
+clipboard-text@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/clipboard-text/-/clipboard-text-1.0.1.tgz#b34590b8f15386061745894ba012104942fb3c48"
+  integrity sha512-RJg2q/r6rBnGlsdIbfI3jWbEec0Wf67Og94ppaoH+aS8GNTNamlUxOEbmqevn0Uup/6f5ob9m8oEPxKHFGIXgQ==
+
 clone@^1.0.2:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/clone/-/clone-1.0.4.tgz#da309cc263df15994c688ca902179ca3c7cd7c7e"
@@ -1315,6 +1320,13 @@ json5@^1.0.1:
   dependencies:
     minimist "^1.2.0"
 
+json5@^2.1.3:
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/json5/-/json5-2.1.3.tgz#c9b0f7fa9233bfe5807fe66fcf3a5617ed597d43"
+  integrity sha512-KXPvOm8K9IJKFM0bmdn8QXh7udDh1g/giieX0NLCaMnb4hEiVFqnop2ImTXCc5e0/oHz3LTqmHGtExn5hfMkOA==
+  dependencies:
+    minimist "^1.2.5"
+
 jsonfile@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/jsonfile/-/jsonfile-4.0.0.tgz#8771aae0799b64076b76640fca058f9c10e33ecb"
@@ -1471,6 +1483,11 @@ lru-cache@^5.1.1:
   integrity sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==
   dependencies:
     yallist "^3.0.2"
+
+lz-string@^1.4.4:
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/lz-string/-/lz-string-1.4.4.tgz#c0d8eaf36059f705796e1e344811cf4c498d3a26"
+  integrity sha1-wNjq82BZ9wV5bh40SBHPTEmNOiY=
 
 magic-string@^0.25.2, magic-string@^0.25.7:
   version "0.25.7"
@@ -2062,6 +2079,11 @@ setprototypeof@1.1.1:
   resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.1.1.tgz#7e95acb24aa92f5885e0abef5ba131330d4ae683"
   integrity sha512-JvdAWfbXeIGaZ9cILp38HntZSFSo3mWg6xGcJJsd+d4aRMOqauag1C63dJfDw7OaMYwEbHMOxEZ1lqVRYP2OAw==
 
+shapify@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/shapify/-/shapify-1.1.0.tgz#ef396535f81cda8afc7fe5d33730569c678cba17"
+  integrity sha512-UObqjXGgTwNJrInzKWOshgJugPkvMkfe2g8xztD9scB2m8OTzKFRbRBtqfEhE00f6P5UAz3jRlmHz5/6D7Uvew==
+
 shebang-command@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/shebang-command/-/shebang-command-2.0.0.tgz#ccd0af4f8835fbdc265b82461aaf0c36663f34ea"
@@ -2311,10 +2333,10 @@ vite@^1.0.0-rc.4:
     vue "^3.0.0-rc.5"
     ws "^7.2.3"
 
-vue-router@^4.0.0-beta.4:
-  version "4.0.0-beta.4"
-  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-4.0.0-beta.4.tgz#0945886e8e35bed368ab57e50a6b004cff1459e0"
-  integrity sha512-Cp8CkTcQuWL3neBLZnd+zg7cH0aA/kX1AwNLmdrChz5z6JI9hNu2qImAXNvhobDddLtNbyjdYSedCB9RYt6aig==
+vue-router@^4.0.0-beta.5:
+  version "4.0.0-beta.5"
+  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-4.0.0-beta.5.tgz#766d0f6c6fa4145e75ed018e0abf4488c0b74724"
+  integrity sha512-6gnRN0Z2fKaR8XjQUOwpZR6wJdyGDtATmMuRf2egshKD9cQEBuu8LapOw1cV7gfwVirgvbBNE3pGw2v7keGzHg==
 
 vue@^3.0.0-rc.5, vue@next:
   version "3.0.0-rc.5"

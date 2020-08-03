@@ -1,5 +1,19 @@
 @import 'tailwindcss/base';
-
 @import 'tailwindcss/components';
-
 @import 'tailwindcss/utilities';
+
+.sr-only {
+  /* https://snook.ca/archives/html_and_css/hiding-content-for-accessibility */
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+}
+.sr-only a:focus,
+.sr-only input:focus,
+.sr-only button:focus {
+  position: static;
+  width: auto;
+  height: auto;
+}

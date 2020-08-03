@@ -1,251 +1,390 @@
 <template>
-  <div>
-    <nav class="bg-gray-800">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
-          <div class="flex items-center">
-            <div class="flex-shrink-0">
-              <img
-                class="h-8 w-8"
-                src="/img/logos/workflow-mark-on-dark.svg"
-                alt="Workflow logo"
-              />
-            </div>
-            <div class="hidden md:block">
-              <div class="ml-10 flex items-baseline">
-                <router-link
-                  v-for="(link, i) in links"
-                  :key="i"
-                  :to="link.to"
-                  custom
-                  v-slot="{ navigate, href, isExactActive }"
-                >
-                  <a
-                    :href="href"
-                    @click="navigate"
-                    class="px-3 py-2 rounded-md text-sm font-medium"
-                    :class="[
-                      isExactActive
-                        ? 'text-white bg-gray-900 focus:outline-none focus:text-white focus:bg-gray-700'
-                        : 'text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700',
-                      i > 0 && 'ml-4',
-                    ]"
-                    >{{ link.text }}</a
-                  >
-                </router-link>
-              </div>
-            </div>
-          </div>
-          <div class="hidden md:block">
-            <div class="ml-4 flex items-center md:ml-6">
-              <button
-                class="p-1 border-2 border-transparent text-gray-400 rounded-full hover:text-white focus:outline-none focus:text-white focus:bg-gray-700"
-                aria-label="Notifications"
-              >
-                <svg
-                  class="h-6 w-6"
-                  stroke="currentColor"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                  />
-                </svg>
-              </button>
-
-              <!-- Profile dropdown -->
-              <div class="ml-3 relative">
-                <div>
-                  <button
-                    class="max-w-xs flex items-center text-sm rounded-full text-white focus:outline-none focus:shadow-solid"
-                    id="user-menu"
-                    aria-label="User menu"
-                    aria-haspopup="true"
-                    @click="showProfileMenu = !showProfileMenu"
-                  >
-                    <img
-                      class="h-8 w-8 rounded-full"
-                      src="/img/person1.jpeg"
-                      alt=""
-                    />
-                  </button>
-                </div>
-
-                <transition
-                  enter-active-class="transition ease-out duration-100"
-                  enter-from-class="transform opacity-0 scale-95"
-                  enter-to-class="transform opacity-100 scale-100"
-                  leave-active-class="transition ease-in duration-75"
-                  leave-from-class="transform opacity-100 scale-100"
-                  leave-to-class="transform opacity-0 scale-95"
-                >
-                  <div
-                    v-if="showProfileMenu"
-                    class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg"
-                  >
-                    <div
-                      class="py-1 rounded-md bg-white shadow-xs"
-                      role="menu"
-                      aria-orientation="vertical"
-                      aria-labelledby="user-menu"
-                    >
-                      <a
-                        href="#"
-                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        role="menuitem"
-                        >Your Profile</a
-                      >
-                      <a
-                        href="#"
-                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        role="menuitem"
-                        >Settings</a
-                      >
-                      <a
-                        href="#"
-                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        role="menuitem"
-                        >Sign out</a
-                      >
-                    </div>
-                  </div>
-                </transition>
-              </div>
-            </div>
-          </div>
-
-          <div class="-mr-2 flex md:hidden">
-            <!-- Mobile menu button -->
-            <button
-              class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:bg-gray-700 focus:text-white"
-              @click="showMenu = !showMenu"
-            >
-              <!-- Menu open: "hidden", Menu closed: "block" -->
-              <svg
-                class="block h-6 w-6"
-                stroke="currentColor"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-              <!-- Menu open: "block", Menu closed: "hidden" -->
-              <svg
-                class="hidden h-6 w-6"
-                stroke="currentColor"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!--
-      Mobile menu, toggle classes based on menu state.
-
-      Open: "block", closed: "hidden"
-    -->
-      <div class="md:hidden" :class="showMenu ? 'block' : 'hidden'">
-        <div class="px-2 pt-2 pb-3 sm:px-3">
-          <router-link
-            v-for="(link, i) in links"
-            :key="i"
-            :to="link.to"
-            v-slot="{ navigate, href, isExactActive }"
-          >
-            <a
-              :href="href"
-              @click="navigate().then(() => (showMenu = false))"
-              class="block px-3 py-2 rounded-md text-base font-medium"
-              :class="[
-                isExactActive
-                  ? 'text-white bg-gray-900 focus:outline-none focus:text-white focus:bg-gray-700'
-                  : 'text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700',
-                i > 0 && 'mt-1',
-              ]"
-              >{{ link.text }}</a
-            >
-          </router-link>
-        </div>
-        <div class="pt-4 pb-3 border-t border-gray-700">
-          <div class="flex items-center px-5">
-            <div class="flex-shrink-0">
-              <img
-                class="h-10 w-10 rounded-full"
-                src="/img/person1.jpeg"
-                alt=""
-              />
-            </div>
-            <div class="ml-3">
-              <div class="text-base font-medium leading-none text-white">
-                Tom Cook
-              </div>
-              <div class="mt-1 text-sm font-medium leading-none text-gray-400">
-                tom@example.com
-              </div>
-            </div>
-          </div>
-          <div class="mt-3 px-2">
-            <a
-              href="#"
-              class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700"
-              >Your Profile</a
-            >
-            <a
-              href="#"
-              class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700"
-              >Settings</a
-            >
-            <a
-              href="#"
-              class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700"
-              >Sign out</a
-            >
-          </div>
-        </div>
-      </div>
-    </nav>
-
-    <header class="bg-white shadow" v-if="$route.meta.title">
-      <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        <h1 class="text-3xl font-bold leading-tight text-gray-900">
-          {{ $route.meta.title }}
-        </h1>
-      </div>
+  <div class="container mx-auto sm:px-2 px-4" ref="selfRef">
+    <header class="my-10">
+      <h1 class="text-4xl font-serif leading-tight">Path Ranker</h1>
+      <h2 class="text-lg text-gray-600 ml-2 mb-4">
+        A vue router path rank tester
+      </h2>
     </header>
 
-    <router-view />
+    <main class="w-100">
+      <p class="leading-tight text-md mb-6 max-w-3xl pl-4">
+        Change paths entries and verify the result on the right. Entries appear
+        sorted in <i>descendant</i> score order. You can customize global
+        options and also apply overrides. The syntax is very similar to the one
+        used by
+        <a
+          href="https://github.com/pillarjs/path-to-regexp"
+          class="text-blue-600 font-bold hover:underline"
+          >path-to-regexp</a
+        >. You can check its documentation to learn how to use custom regexes
+        like <code>/:id(\\d+)</code> and <i>repeatable</i> parameters like
+        <code>/:id+</code>.
+        <br />
+        The number in a box that looks like this
+        <span class="font-bold bg-gray-400 px-1 inline-block rounded"
+          >[[80]]</span
+        >
+        is the score of the path.
+        <br />
+        If you found a ranking that seems wrong, please share the URL with me by
+        DM on
+        <a
+          class="text-blue-600 font-bold hover:underline"
+          href="https://twitter.com/posva"
+          >Twitter</a
+        >
+        or Discord.
+      </p>
+
+      <div
+        class="flex items-strecth content-around justify-around flex-col lg:flex-row"
+      >
+        <article class="flex-1 px-1">
+          <header>
+            <h3 class="font-serif text-xl mb-4">Paths to rank</h3>
+          </header>
+          <form @submit.prevent @reset.prevent="reset">
+            <fieldset class="border pl-4 pr-1 pb-2 mb-2">
+              <legend class="p-2">
+                Configure global options. They will be applied to
+                <b>every</b> path.
+              </legend>
+
+              <label for="globalOptions.strict" class="font-bold text-sm block">
+                <input
+                  id="globalOptions.strict"
+                  v-model="globalOptions.strict"
+                  class="leading-tight"
+                  type="checkbox"
+                  name="globalOptions.strict"
+                />
+                Strict
+                <span class="text-xs text-gray-600"
+                  >(Disallows the check of an optional <code>/</code> at the end
+                  of the path)</span
+                >
+              </label>
+              <label
+                for="globalOptions.sensitive"
+                class="font-bold text-sm block"
+              >
+                <input
+                  id="globalOptions.sensitive"
+                  v-model="globalOptions.sensitive"
+                  class="leading-tight"
+                  type="checkbox"
+                  name="globalOptions.sensitive"
+                />
+                Case sensitive
+                <span class="text-xs text-gray-600"
+                  >(makes the route case sensitive)</span
+                >
+              </label>
+            </fieldset>
+            <template v-for="(path, i) in paths">
+              <PathEntry
+                :key="i"
+                :path="path"
+                :active="selectedEntry === path.path"
+                @focus="selectedEntry = path.path"
+                @blur="selectedEntry = null"
+                @enter="focusPathEntry(i + 1)"
+                class="p-2 path-entry"
+              />
+              <hr :key="'hr' + i" class="bg-gray-400 h-px my-2" />
+            </template>
+
+            <button
+              type="button"
+              :disabled="isLinkCopied"
+              class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mt-6 mb-2 block sm:inline-block w-full lg:w-auto"
+              @click="exportPaths"
+            >
+              {{ copyButtonText }}
+            </button>
+            <button
+              type="button"
+              class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mt-6 mb-2 block sm:inline-block w-full lg:w-auto"
+              @click="() => importModalRef.open()"
+            >
+              Import from <code>routes</code> array
+            </button>
+            <button
+              type="reset"
+              class="bg-red-500 hover:bg-red-700 text-white hover:text-gray-100 font-semibold py-2 px-4 border border-gray-400 rounded shadow block sm:inline-block w-full lg:w-auto"
+            >
+              Reset
+            </button>
+          </form>
+        </article>
+
+        <article
+          class="flex-1 mt-4 md:mt-0 text-left px-1 route-matcher-container"
+        >
+          <header>
+            <h3 class="font-serif text-xl mb-8">Ranking results</h3>
+          </header>
+          <RouteMatcher
+            v-for="(matcher, i) in pathMatcher.getRoutes()"
+            :key="i"
+            class="mb-2"
+            :matcher="matcher"
+            :current-location="route"
+            :active="selectedEntry === matcher.record.path"
+            @focus.native.passive="selectedEntry = matcher.record.path"
+            @mouseover.native.passive="selectedEntry = matcher.record.path"
+            @mouseleave.native.passive="selectedEntry = null"
+          />
+
+          <label class="mt-3 block">
+            Test against a string location:
+            <input
+              autocomplete="off"
+              autocapitalize="none"
+              spellcheck="false"
+              v-model="route"
+              class="block bg-white focus:outline-0 focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal text-sm mt-2"
+              type="text"
+              placeholder="/home"
+            />
+          </label>
+        </article>
+      </div>
+
+      <footer class="text-xs text-gray-700 mt-8 mb-4 text-center">
+        Created by Eduardo San Martin Morote
+        <a href="https://esm.dev" class="text-purple-500 font-bold underline"
+          >@posva</a
+        >
+        2019 ©
+      </footer>
+    </main>
+
+    <ImportModal ref="importModalRef" @paths="paths = $event"></ImportModal>
   </div>
 </template>
 
-<script>
-import { defineComponent } from 'vue'
+<script lang="ts">
+import {
+  defineComponent,
+  ref,
+  computed,
+  watch,
+  onMounted,
+  getCurrentInstance,
+} from 'vue'
+import copy from 'clipboard-text'
+import { compressPaths, decompressPaths, PathOptions } from './api/encode-data'
+import { PathToRank } from './api/encode-data'
+import { createRouterMatcher, useRoute, useRouter } from 'vue-router'
+import PathEntry from './components/PathEntry.vue'
+import RouteMatcher from './components/RouteMatcher.vue'
+import ImportModal from './components/ImportModal.vue'
+
+function createPathEntry(path = ''): PathToRank {
+  return {
+    path,
+    sensitive: false,
+    strict: false,
+    applyOptions: false,
+  }
+}
+
+const defaultPaths = [
+  createPathEntry('/home'),
+  createPathEntry('/:page'),
+  createPathEntry(),
+]
+
+const defaultOptions: PathOptions = {
+  strict: false,
+  sensitive: false,
+}
+
+const defaultEncodedPaths = compressPaths(defaultPaths, defaultOptions)
 
 export default defineComponent({
-  data: () => ({
-    showMenu: false,
-    showProfileMenu: false,
-    links: [
-      { text: 'Home', to: '/' },
-      { text: 'About', to: '/about' },
-    ],
-  }),
+  components: { PathEntry, RouteMatcher, ImportModal },
+
+  setup() {
+    const lastEncodedPaths = ref('')
+    const paths = ref<PathToRank[]>([])
+    const selectedEntry = ref<string | null>(null)
+    const route = ref('')
+    const isLinkCopied = ref(false)
+
+    const $route = useRoute()
+    const $router = useRouter()
+
+    const globalOptions = ref(defaultOptions)
+
+    const beforeLastPathEntry = computed(
+      () => paths.value[paths.value.length - 2]
+    )
+
+    const lastPathEntry = computed(() => {
+      return paths.value[paths.value.length - 1]
+    })
+
+    const filteredPaths = computed(() => {
+      return paths.value.filter((path) => path.path.startsWith('/'))
+    })
+
+    const pathMatcher = computed(() => {
+      // TODO: fix type
+      return createRouterMatcher(
+        filteredPaths.value as any,
+        globalOptions.value
+      )
+    })
+
+    const copyButtonText = computed(() => {
+      return isLinkCopied.value ? 'Copied!' : 'Copy Share link'
+    })
+
+    function reset() {
+      paths.value = [
+        createPathEntry('/home'),
+        createPathEntry('/:page'),
+        createPathEntry(),
+      ]
+    }
+
+    function updateStateFromQuery(): void {
+      const { p } = $route.query
+      const encodedPaths = Array.isArray(p) ? p[0] : p
+      // debugger
+
+      if (encodedPaths && lastEncodedPaths.value !== encodedPaths) {
+        try {
+          const { paths: newPaths, options } = decompressPaths(encodedPaths)
+          // @ts-ignore: TODO:
+          paths.value = paths
+          globalOptions.value = options
+          lastEncodedPaths.value = encodedPaths
+        } catch (error) {
+          console.error('Failed decompressing paths', error)
+          // invalid parameter, reset to default
+          // TODO: there seems to be something breaking on SSR but not on generation
+          paths.value = defaultPaths
+          // force watcher
+          lastEncodedPaths.value = ''
+        }
+      }
+    }
+
+    function updateRouteQueryFromState() {
+      try {
+        // @ts-ignore: TODO: fix
+        const p = compressPaths(paths.value, globalOptions.value)
+        if (p === lastEncodedPaths.value) return
+        // avoid recursive setting
+        lastEncodedPaths.value = p
+        // add a hash at the end because some links end with `.` and some programs do not
+        // consider dots as parts of the url (eg: Discord)
+        $router.push({ query: { p }, hash: '#' })
+      } catch (error) {
+        console.error('Failed compressing paths', error)
+      }
+    }
+
+    // this watcher must be triggered automatically to allow SSR
+    watch(() => $route.query.p, updateStateFromQuery, {
+      // don't trigger the watcher on client because it would trigger an SSR mismatch
+      // since we only do a generate, we get a hardcoded version of the paths (defaultPaths)
+      // in development we are doing SSR so we always need to call updateRouteQueryFromState
+      immediate: true,
+    })
+
+    if (!paths.value.length) {
+      paths.value = defaultPaths
+      lastEncodedPaths.value = defaultEncodedPaths
+    }
+
+    // we don't need the watchers during SSR
+    onMounted(() => {
+      // manually call the function on client to prevent SSR mismatch when a query is provided
+      if (lastEncodedPaths.value !== $route.query.p) updateStateFromQuery()
+
+      // ensure the route query is present since we generate instead of serving the app
+      if (!$route.query.p)
+        $router.push({ query: { p: lastEncodedPaths.value }, hash: '#' })
+
+      watch(
+        () => beforeLastPathEntry.value.path,
+        (path) => {
+          if (!path && paths.value.length > 2 && !lastPathEntry.value.path) {
+            paths.value.pop()
+          }
+        }
+      )
+
+      watch(
+        () => lastPathEntry.value.path,
+        (path) => {
+          if (path) {
+            paths.value.push(createPathEntry())
+          }
+        }
+      )
+
+      watch(globalOptions, updateRouteQueryFromState, { deep: true })
+      watch(paths, updateRouteQueryFromState, {
+        deep: true,
+        immediate: true,
+      })
+    })
+
+    function exportPaths() {
+      copy(window.location.href)
+      isLinkCopied.value = true
+      setTimeout(() => {
+        isLinkCopied.value = false
+      }, 1000)
+    }
+
+    const selfRef = ref<Element>()
+    const importModalRef = ref<Element>()
+
+    function focusPathEntry(i: number) {
+      const input = selfRef.value.querySelectorAll(
+        '.path-entry input[type="text"]'
+      )[i] as HTMLElement
+
+      if (input) input.focus()
+      else (document.activeElement as HTMLElement).blur()
+    }
+
+    return {
+      paths,
+      lastEncodedPaths,
+      exportPaths,
+      focusPathEntry,
+      updateRouteQueryFromState,
+      updateStateFromQuery,
+      copyButtonText,
+      pathMatcher,
+      filteredPaths,
+      lastPathEntry,
+      beforeLastPathEntry,
+      globalOptions,
+      route,
+      isLinkCopied,
+      selectedEntry,
+      reset,
+
+      selfRef,
+      importModalRef,
+    }
+  },
 })
 </script>
+
+<style scoped>
+@media (min-width: 1024px) {
+  .route-matcher-container {
+    max-width: 50%;
+  }
+}
+</style>

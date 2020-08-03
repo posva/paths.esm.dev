@@ -17,4 +17,7 @@ module.exports = {
       },
     },
   },
+  variants: {
+    padding: ['responsive', 'hover', 'focus'],
+  },
 }
