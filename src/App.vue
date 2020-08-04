@@ -125,8 +125,9 @@
           <header>
             <h3 class="font-serif text-xl mb-8">Ranking results</h3>
           </header>
+
           <RouteMatcher
-            v-for="(matcher, i) in pathMatcher.getRoutes()"
+            v-for="(matcher, i) in pathMatcher"
             :key="i"
             class="mb-2"
             :matcher="matcher"
@@ -177,7 +178,13 @@ import {
 import copy from 'clipboard-text'
 import { compressPaths, decompressPaths, PathOptions } from './api/encode-data'
 import { PathToRank } from './api/encode-data'
-import { createRouterMatcher, useRoute, useRouter } from 'vue-router'
+import {
+  createRouterMatcher,
+  useRoute,
+  useRouter,
+  RouteRecordRaw,
+  _RouteRecordBase,
+} from 'vue-router'
 import PathEntry from './components/PathEntry.vue'
 import RouteMatcher from './components/RouteMatcher.vue'
 import ImportModal from './components/ImportModal.vue'
@@ -227,16 +234,25 @@ export default defineComponent({
       return paths.value[paths.value.length - 1]
     })
 
-    const filteredPaths = computed(() => {
-      return paths.value.filter((path) => path.path.startsWith('/'))
+    const filteredPaths = computed<PathToRank[]>(() => {
+      return (paths.value as PathToRank[]).filter((path) =>
+        path.path.startsWith('/')
+      )
     })
 
-    const pathMatcher = computed(() => {
-      // TODO: fix type
-      return createRouterMatcher(
-        filteredPaths.value as any,
-        globalOptions.value
-      )
+    const pathMatcher = computed<any[]>(() => {
+      const matcher = createRouterMatcher([], globalOptions.value)
+      return filteredPaths.value.map((record) => {
+        try {
+          // to hard to type this one correctly
+          const name = Symbol()
+          matcher.addRoute({ ...(record as any), name })
+          return matcher.getRecordMatcher(name)
+        } catch (error) {
+          error.record = record
+          return error
+        }
+      })
     })
 
     const copyButtonText = computed(() => {
@@ -254,21 +270,19 @@ export default defineComponent({
     function updateStateFromQuery(): void {
       const { p } = $route.query
       const encodedPaths = Array.isArray(p) ? p[0] : p
-      // debugger
 
       if (encodedPaths && lastEncodedPaths.value !== encodedPaths) {
         try {
           const { paths: newPaths, options } = decompressPaths(encodedPaths)
-          // @ts-ignore: TODO:
-          paths.value = paths
+          paths.value = newPaths
           globalOptions.value = options
           lastEncodedPaths.value = encodedPaths
         } catch (error) {
           console.error('Failed decompressing paths', error)
           // invalid parameter, reset to default
           // TODO: there seems to be something breaking on SSR but not on generation
-          paths.value = defaultPaths
           // force watcher
+          paths.value = defaultPaths
           lastEncodedPaths.value = ''
         }
       }
@@ -276,8 +290,10 @@ export default defineComponent({
 
     function updateRouteQueryFromState() {
       try {
-        // @ts-ignore: TODO: fix
-        const p = compressPaths(paths.value, globalOptions.value)
+        const p = compressPaths(
+          paths.value as PathToRank[],
+          globalOptions.value
+        )
         if (p === lastEncodedPaths.value) return
         // avoid recursive setting
         lastEncodedPaths.value = p

@@ -29,4 +29,4 @@ if (import.meta.hot) {
 
 app.use(router)
 
-app.mount('#app')
+router.isReady().then(() => app.mount('#app'))
