@@ -104,9 +104,11 @@ import { defineComponent, ref, nextTick } from 'vue'
 import copy from 'clipboard-text'
 import JSON5 from 'json5'
 import { PathToRank } from '../types/matcher'
-// import { FocusTrap } from 'focus-trap-vue'
+import { FocusTrap } from 'focus-trap-vue'
 
 export default defineComponent({
+  components: { FocusTrap },
+
   setup() {
     const isOpen = ref(false)
     const routes = ref('')
@@ -115,7 +117,7 @@ export default defineComponent({
     const modalRef = ref<Element>()
     const errorRef = ref<Element>()
     const formRef = ref<Element>()
-    const textareRef = ref<Element>()
+    const textareaRef = ref<Element>()
 
     function open() {
       // disallow scroll
@@ -172,7 +174,7 @@ export default defineComponent({
     return {
       errorRef,
       modalRef,
-      textareRef,
+      textareaRef,
       formRef,
 
       isOpen,
