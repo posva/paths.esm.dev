@@ -257,7 +257,7 @@ export default defineComponent({
         record.name = name
         try {
           // to hard to type this one correctly
-          matcher.addRoute(record as any)
+          matcher.addRoute({ ...globalOptions.value, ...record } as any)
           matcherMap.set(name, matcher.getRecordMatcher(name))
         } catch (error) {
           error.record = record
