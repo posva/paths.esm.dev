@@ -2179,10 +2179,10 @@ supports-color@^7.1.0:
   dependencies:
     has-flag "^4.0.0"
 
-tailwindcss@^1.6.1:
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-1.6.1.tgz#0fbd031848066665fe82dc89eeb30c3d9c4f83ba"
-  integrity sha512-hg20uPJTi3q4Ib6YSMb5p9ZEpp73O/5p3SxWFud45ePXAVl3/DyGMHhjTFDMVX5YqmLrPcEggxBw3Vx9TLuxyA==
+tailwindcss@^1.6.2:
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-1.6.2.tgz#352da9e1b0d9154c95ce12483daa1c2fa1f1eea8"
+  integrity sha512-Cpa0kElG8Sg5sJSvTYi2frmIQZq0w37RLNNrYyy/W6HIWKspqSdTfb9tIN6X1gm4KV5a+TE/n7EKmn5Q9C7EUQ==
   dependencies:
     "@fullhuman/postcss-purgecss" "^2.1.2"
     autoprefixer "^9.4.5"
@@ -2334,9 +2334,9 @@ vite@^1.0.0-rc.4:
     ws "^7.2.3"
 
 vue-router@^4.0.0-beta.5:
-  version "4.0.0-beta.5"
-  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-4.0.0-beta.5.tgz#766d0f6c6fa4145e75ed018e0abf4488c0b74724"
-  integrity sha512-6gnRN0Z2fKaR8XjQUOwpZR6wJdyGDtATmMuRf2egshKD9cQEBuu8LapOw1cV7gfwVirgvbBNE3pGw2v7keGzHg==
+  version "4.0.0-beta.6"
+  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-4.0.0-beta.6.tgz#7ddf4c00d1bee778fb8945f5e8ccb931b5885543"
+  integrity sha512-zF+reWzcM0ivbIAbjfCpDVYlvc4iQAi7rx5abLNUcNiJxuTMR0lEBoxamQcaewV4sJ+zskX6PYW3QM5/fRkPqA==
 
 vue@^3.0.0-rc.5, vue@next:
   version "3.0.0-rc.5"
