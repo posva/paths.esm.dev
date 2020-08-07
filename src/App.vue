@@ -158,7 +158,7 @@
         <a href="https://esm.dev" class="text-purple-500 font-bold underline"
           >@posva</a
         >
-        2019 ©
+        2020 ©
       </footer>
     </main>
 
