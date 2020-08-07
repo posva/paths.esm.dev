@@ -105,14 +105,14 @@
             </button>
             <button
               type="button"
-              class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mt-6 mb-2 block sm:inline-block w-full lg:w-auto"
+              class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mt-6 mb-2 block sm:inline-block w-full lg:w-auto ml-2"
               @click="() => importModalRef.open()"
             >
               Import from <code>routes</code> array
             </button>
             <button
               type="reset"
-              class="bg-red-500 hover:bg-red-700 text-white hover:text-gray-100 font-semibold py-2 px-4 border border-gray-400 rounded shadow block sm:inline-block w-full lg:w-auto"
+              class="bg-red-500 hover:bg-red-700 text-white hover:text-gray-100 font-semibold py-2 px-4 border border-gray-400 rounded shadow block sm:inline-block w-full lg:w-auto ml-2"
             >
               Reset
             </button>
