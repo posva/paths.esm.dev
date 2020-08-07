@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto sm:px-2 px-4" ref="selfRef">
+  <div class="container mx-auto px-2 md:px-4" ref="selfRef">
     <header class="my-10">
       <h1 class="text-4xl font-serif leading-tight">Path Ranker</h1>
       <h2 class="text-lg text-gray-600 ml-2 mb-4">
@@ -105,14 +105,14 @@
             </button>
             <button
               type="button"
-              class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mt-6 mb-2 block sm:inline-block w-full lg:w-auto ml-2"
+              class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mt-6 mb-2 block sm:inline-block w-full lg:w-auto lg:ml-2"
               @click="() => importModalRef.open()"
             >
               Import from <code>routes</code> array
             </button>
             <button
               type="reset"
-              class="bg-red-500 hover:bg-red-700 text-white hover:text-gray-100 font-semibold py-2 px-4 border border-gray-400 rounded shadow block sm:inline-block w-full lg:w-auto ml-2"
+              class="bg-red-500 hover:bg-red-700 text-white hover:text-gray-100 font-semibold py-2 px-4 border border-gray-400 rounded shadow block sm:inline-block w-full lg:w-auto lg:ml-2"
             >
               Reset
             </button>
@@ -127,7 +127,7 @@
           </header>
 
           <RouteMatcher
-            v-for="(matcher, i) in pathMatcher"
+            v-for="(matcher, i) in pathMatchers"
             :key="i"
             class="mb-2"
             :matcher="matcher"
@@ -176,8 +176,7 @@ import {
   getCurrentInstance,
 } from 'vue'
 import copy from 'clipboard-text'
-import { compressPaths, decompressPaths, PathOptions } from './api/encode-data'
-import { PathToRank } from './api/encode-data'
+import { compressPaths, decompressPaths } from './api/encode-data'
 import {
   createRouterMatcher,
   useRoute,
@@ -188,6 +187,12 @@ import {
 import PathEntry from './components/PathEntry.vue'
 import RouteMatcher from './components/RouteMatcher.vue'
 import ImportModal from './components/ImportModal.vue'
+import {
+  RouteRecordMatcher,
+  RouteRecordMatcherError,
+  PathToRank,
+  PathOptions,
+} from './types/matcher'
 
 function createPathEntry(path = ''): PathToRank {
   return {
@@ -240,19 +245,33 @@ export default defineComponent({
       )
     })
 
-    const pathMatcher = computed<any[]>(() => {
+    const pathMatchers = computed(() => {
       const matcher = createRouterMatcher([], globalOptions.value)
-      return filteredPaths.value.map((record) => {
+      const matcherMap = new Map<
+        symbol,
+        RouteRecordMatcher | RouteRecordMatcherError
+      >()
+      const result: Array<RouteRecordMatcher | RouteRecordMatcherError> = []
+      filteredPaths.value.forEach((record) => {
+        const name = Symbol()
+        record.name = name
         try {
           // to hard to type this one correctly
-          const name = Symbol()
-          matcher.addRoute({ ...(record as any), name })
-          return matcher.getRecordMatcher(name)
+          matcher.addRoute(record as any)
+          matcherMap.set(name, matcher.getRecordMatcher(name))
         } catch (error) {
           error.record = record
-          return error
+          result.push(error as RouteRecordMatcherError)
         }
       })
+
+      matcher
+        .getRoutes()
+        .forEach((route) =>
+          result.push(matcherMap.get(route.record.name as symbol))
+        )
+
+      return result
     })
 
     const copyButtonText = computed(() => {
@@ -380,7 +399,7 @@ export default defineComponent({
       updateRouteQueryFromState,
       updateStateFromQuery,
       copyButtonText,
-      pathMatcher,
+      pathMatchers,
       filteredPaths,
       lastPathEntry,
       beforeLastPathEntry,

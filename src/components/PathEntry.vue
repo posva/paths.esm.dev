@@ -51,7 +51,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
-import { PathToRank } from '../api/encode-data'
+import { PathToRank } from '../types/matcher'
 
 export default defineComponent({
   props: {

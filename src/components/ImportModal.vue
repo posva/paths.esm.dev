@@ -103,7 +103,7 @@
 import { defineComponent, ref, nextTick } from 'vue'
 import copy from 'clipboard-text'
 import JSON5 from 'json5'
-import { PathToRank } from '../api/encode-data'
+import { PathToRank } from '../types/matcher'
 // import { FocusTrap } from 'focus-trap-vue'
 
 export default defineComponent({

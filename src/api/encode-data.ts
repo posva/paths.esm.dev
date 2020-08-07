@@ -1,16 +1,9 @@
 // encoding paths
-import { createRouterMatcher, _RouteRecordBase } from 'vue-router'
-// import { PathToRank, RequiredPathParserOptions } from './matcher'
 import LZString from 'lz-string'
 import { encode as encode64, decode as decode64 } from './safe64'
+import { PathOptions, PathToRank } from '../types/matcher'
 
 const OPTIONS_DELIMITER = ' '
-
-export interface PathToRank extends _RouteRecordBase {
-  applyOptions: boolean
-}
-
-export type PathOptions = Parameters<typeof createRouterMatcher>[1]
 
 const enum OPTION_FLAGS {
   applyOptions = 1 << 2,
