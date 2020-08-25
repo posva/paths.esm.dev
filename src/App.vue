@@ -82,9 +82,8 @@
                 >
               </label>
             </fieldset>
-            <template v-for="(path, i) in paths">
+            <template v-for="(path, i) in paths" :key="i">
               <PathEntry
-                :key="i"
                 :path="path"
                 :active="selectedEntry === path.path"
                 @focus="selectedEntry = path.path"
@@ -92,7 +91,7 @@
                 @enter="focusPathEntry(i + 1)"
                 class="p-2 path-entry"
               />
-              <hr :key="'hr' + i" class="bg-gray-400 h-px my-2" />
+              <hr class="bg-gray-400 h-px my-2" />
             </template>
 
             <button
