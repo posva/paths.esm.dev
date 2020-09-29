@@ -132,9 +132,10 @@
             :matcher="matcher"
             :current-location="route"
             :active="selectedEntry === matcher.record.path"
-            @focus.native.passive="selectedEntry = matcher.record.path"
-            @mouseover.native.passive="selectedEntry = matcher.record.path"
-            @mouseleave.native.passive="selectedEntry = null"
+            @focus.passive="selectedEntry = matcher.record.path"
+            @blur.passive="selectedEntry = null"
+            @mouseover.passive="selectedEntry = matcher.record.path"
+            @mouseleave.passive="selectedEntry = null"
           />
 
           <label class="mt-3 block">
@@ -228,7 +229,7 @@ export default defineComponent({
     const $route = useRoute()
     const $router = useRouter()
 
-    const globalOptions = ref(defaultOptions)
+    const globalOptions = ref({ ...defaultOptions })
 
     const beforeLastPathEntry = computed(
       () => paths.value[paths.value.length - 2]
@@ -239,9 +240,16 @@ export default defineComponent({
     })
 
     const filteredPaths = computed<PathToRank[]>(() => {
-      return (paths.value as PathToRank[]).filter((path) =>
-        path.path.startsWith('/')
-      )
+      return (paths.value as PathToRank[])
+        .filter((path) => path.path.startsWith('/'))
+        .map((path) => {
+          const copy: PathToRank = { ...path }
+          if (!path.applyOptions) {
+            delete copy.sensitive
+            delete copy.strict
+          }
+          return copy
+        })
     })
 
     const pathMatchers = computed(() => {
