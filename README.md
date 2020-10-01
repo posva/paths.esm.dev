@@ -1,38 +1,25 @@
-# Vite + Tailwind CSS starter
+# Path Parser
 
-Note if you have access to [Tailwind UI](https://tailwindui.com), you can follow the following steps to add it:
+This is the path parser used by Vue Router. It transforms paths into Regexp and correctly sort them.
 
-1. Install `@tailwindcss/ui`:
+## Development
 
-```sh
-yarn add @tailwindcss/ui
-```
-
-2. Add the plugin in `tailwind.config.js` without changing anything else:
-
-```js
-// tailwind.config.js
-module.exports = {
-  // ...
-  // rest of the config
-  plugins: [require('@tailwindcss/ui')],
-}
-```
-
-## Installation
+Install dependencies:
 
 ```sh
 yarn
 ```
 
-## Development
+Run the development server:
 
 ```sh
 yarn dev
 ```
 
-## Build
+Build for production:
 
 ```sh
 yarn build
+# requires a global server command installed
+serve dist
 ```

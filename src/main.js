@@ -3,6 +3,11 @@ import './assets/main.css'
 import App from './App.vue'
 import { routes } from './routes.js'
 import { createRouter, createWebHistory } from 'vue-router'
+import { loadServiceWorker } from './loadSW'
+
+// if (!__DEV__ || true) {
+loadServiceWorker()
+// }
 
 let app = createApp(App)
 let router = createRouter({
