@@ -5,10 +5,6 @@ import { routes } from './routes.js'
 import { createRouter, createWebHistory } from 'vue-router'
 import { loadServiceWorker } from './loadSW'
 
-// if (!__DEV__ || true) {
-loadServiceWorker()
-// }
-
 let app = createApp(App)
 let router = createRouter({
   history: createWebHistory(),
@@ -30,6 +26,9 @@ if (import.meta.hot) {
     }
     router.replace('')
   })
+} else {
+  // production only
+  loadServiceWorker()
 }
 
 app.use(router)

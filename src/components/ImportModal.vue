@@ -10,7 +10,7 @@
       <section
         class="bg-white min-h-20 w-64 sm:p-6 p-2 sm:m-0 m-2 rounded border-gray border-2"
         role="dialog"
-        style="width: 36rem;"
+        style="width: 36rem"
         ref="modalRef"
       >
         <h2 class="text-2xl font-serif mb-2" id="import-modal-title">
@@ -162,9 +162,9 @@ export default defineComponent({
 
         this.$emit('paths', paths)
         this.close()
-      } catch (error) {
-        console.error('Failed parsing', error)
-        error.value = error
+      } catch (err) {
+        console.error('Failed parsing', err)
+        error.value = err
         await nextTick()
         // @ts-ignore
         errorRef.value.focus()
