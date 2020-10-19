@@ -310,7 +310,7 @@
     "@vue/compiler-core" "3.0.1"
     "@vue/shared" "3.0.1"
 
-"@vue/compiler-sfc@^3.0.0-rc.5":
+"@vue/compiler-sfc@^3.0.0", "@vue/compiler-sfc@^3.0.0-rc.5":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@vue/compiler-sfc/-/compiler-sfc-3.0.1.tgz#f340f8f75b5c1c4509e0f3a12c79d1544899b663"
   integrity sha512-VO5gJ7SyHw0hf1rkKXRlxjXI9+Q4ngcuUWYnyjOSDch7Wtt2IdOEiC82KFWIkfWMpHqA5HPzL2nDmys3y9d19w==
@@ -2400,6 +2400,15 @@ vue-router@^4.0.0-beta.5:
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-4.0.0-beta.13.tgz#4611d09a9e44f231cc401ecc294a7f2dcb30e6a6"
   integrity sha512-dYv9qpHPaojQlfujViiTkPkf1Bf5RCFzkCkdVFc1cENzWJYAGJanpIHiyjyKoM4u7IDFBZMItci+U4ieaEWA8A==
 
+vue@^3.0.0:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/vue/-/vue-3.0.1.tgz#dcdabf07da37e655e23d7d22eacc18c2da5f5a16"
+  integrity sha512-WBTgaQMJIWQuhlzMV6C0qvVrxyQSpx3gKwflYC0sqGKEZSxMIOYRnrIlHUN4ivUVvP7mUMxcnFTt7P+akdOkQA==
+  dependencies:
+    "@vue/compiler-dom" "3.0.1"
+    "@vue/runtime-dom" "3.0.1"
+    "@vue/shared" "3.0.1"
+
 vue@^3.0.0-rc.5:
   version "3.0.0-rc.5"
   resolved "https://registry.yarnpkg.com/vue/-/vue-3.0.0-rc.5.tgz#973175d45a892b3bd23ef5de7faa4add9c66275f"
@@ -2408,15 +2417,6 @@ vue@^3.0.0-rc.5:
     "@vue/compiler-dom" "3.0.0-rc.5"
     "@vue/runtime-dom" "3.0.0-rc.5"
     "@vue/shared" "3.0.0-rc.5"
-
-vue@^3.0.0-rc.8:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/vue/-/vue-3.0.1.tgz#dcdabf07da37e655e23d7d22eacc18c2da5f5a16"
-  integrity sha512-WBTgaQMJIWQuhlzMV6C0qvVrxyQSpx3gKwflYC0sqGKEZSxMIOYRnrIlHUN4ivUVvP7mUMxcnFTt7P+akdOkQA==
-  dependencies:
-    "@vue/compiler-dom" "3.0.1"
-    "@vue/runtime-dom" "3.0.1"
-    "@vue/shared" "3.0.1"
 
 wcwidth@^1.0.1:
   version "1.0.1"
