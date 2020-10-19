@@ -58,6 +58,7 @@ export default defineComponent({
     path: Object as PropType<PathToRank>,
     active: Boolean,
   },
+
   mounted() {
     this.$watch('path.path', (path) => {
       // if the user is navigating while the input is focused, we emit focus to
