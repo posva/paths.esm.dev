@@ -148,6 +148,29 @@
               placeholder="/home"
             />
           </label>
+
+          <template v-if="matchedRoute">
+            <template v-if="Object.keys(matchedRoute.params).length > 0">
+              <p class="my-2">Matched Params:</p>
+              <ul>
+                <li
+                  class="list-disc list-inside"
+                  v-for="(value, key) in matchedRoute.params"
+                  :key="key"
+                >
+                  <span class="font-mono bg-gray-300 rounded-md px-1">{{
+                    key
+                  }}</span
+                  >: <span class="font-mono">{{ value }}</span>
+                </li>
+              </ul>
+            </template>
+            <p v-else class="my-2">
+              <span class="font-mono">{{ matchedRoute.path }}</span> has no
+              params.
+            </p>
+          </template>
+          <p v-else>No match found.</p>
         </article>
       </div>
 
@@ -178,6 +201,7 @@ import { compressPaths, decompressPaths } from './api/encode-data'
 import {
   createRouterMatcher,
   LocationQueryRaw,
+  START_LOCATION,
   useRoute,
   useRouter,
   _RouteRecordBase,
@@ -231,7 +255,7 @@ export default defineComponent({
     watch(
       () => $route.query.t,
       (t) => {
-        route.value = (typeof t === 'string' ? t : '') || ''
+        route.value = (typeof t === 'string' ? t : '/') || ''
       },
       { immediate: true }
     )
@@ -265,8 +289,11 @@ export default defineComponent({
         })
     })
 
+    const routerMatcher = ref(createRouterMatcher([], globalOptions.value))
+
     const pathMatchers = computed(() => {
       const matcher = createRouterMatcher([], globalOptions.value)
+      routerMatcher.value = matcher
       const matcherMap = new Map<
         symbol,
         RouteRecordMatcher | RouteRecordMatcherError
@@ -293,6 +320,12 @@ export default defineComponent({
 
       return result
     })
+
+    const matchedRoute = computed(
+      () =>
+        route.value &&
+        routerMatcher.value.resolve({ path: route.value }, START_LOCATION)
+    )
 
     const copyButtonText = computed(() => {
       return isLinkCopied.value ? 'Copied!' : 'Copy Share link'
@@ -425,6 +458,7 @@ export default defineComponent({
       beforeLastPathEntry,
       globalOptions,
       route,
+      matchedRoute,
       isLinkCopied,
       selectedEntry,
       reset,
