@@ -239,7 +239,7 @@ export default defineComponent({
     function saveTestRoute() {
       const query: LocationQueryRaw = { ...$route.query, t: route.value }
       if (!query.t) delete query.t
-      $router.push({ query })
+      $router.push({ query, hash: $route.hash })
     }
 
     const globalOptions = ref({ ...defaultOptions })
@@ -338,7 +338,7 @@ export default defineComponent({
         lastEncodedPaths.value = p
         // add a hash at the end because some links end with `.` and some programs do not
         // consider dots as parts of the url (eg: Discord)
-        $router.push({ query: { p }, hash: '#' })
+        $router.push({ query: { ...$route.query, p }, hash: '#' })
       } catch (error) {
         console.error('Failed compressing paths', error)
       }
