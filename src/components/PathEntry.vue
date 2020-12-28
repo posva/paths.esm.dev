@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, PropType, ref, watch } from 'vue'
 import { PathToRank } from '../types/matcher'
 
 export default defineComponent({
@@ -59,12 +59,18 @@ export default defineComponent({
     active: Boolean,
   },
 
-  mounted() {
-    this.$watch('path.path', (path) => {
-      // if the user is navigating while the input is focused, we emit focus to
-      // update the active route
-      if (document.activeElement === this.$refs.input) this.$emit('focus')
-    })
+  setup(props, { emit }) {
+    const input = ref()
+    watch(
+      () => props.path!.path,
+      (path) => {
+        // if the user is navigating while the input is focused, we emit focus to
+        // update the active route
+        if (document.activeElement === input.value) emit('focus')
+      }
+    )
+
+    return { input }
   },
 })
 </script>
