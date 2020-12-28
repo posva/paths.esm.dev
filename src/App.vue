@@ -142,6 +142,7 @@
               autocapitalize="none"
               spellcheck="false"
               v-model="route"
+              @change="saveTestRoute"
               class="block bg-white focus:outline-0 focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal text-sm mt-2"
               type="text"
               placeholder="/home"
@@ -176,9 +177,9 @@ import copy from 'clipboard-text'
 import { compressPaths, decompressPaths } from './api/encode-data'
 import {
   createRouterMatcher,
+  LocationQueryRaw,
   useRoute,
   useRouter,
-  RouteRecordRaw,
   _RouteRecordBase,
 } from 'vue-router'
 import PathEntry from './components/PathEntry.vue'
@@ -220,11 +221,26 @@ export default defineComponent({
     const lastEncodedPaths = ref('')
     const paths = ref<PathToRank[]>([])
     const selectedEntry = ref<string | null>(null)
-    const route = ref('')
     const isLinkCopied = ref(false)
 
     const $route = useRoute()
     const $router = useRouter()
+
+    const route = ref('')
+
+    watch(
+      () => $route.query.t,
+      (t) => {
+        route.value = (typeof t === 'string' ? t : '') || ''
+      },
+      { immediate: true }
+    )
+
+    function saveTestRoute() {
+      const query: LocationQueryRaw = { ...$route.query, t: route.value }
+      if (!query.t) delete query.t
+      $router.push({ query })
+    }
 
     const globalOptions = ref({ ...defaultOptions })
 
@@ -412,6 +428,8 @@ export default defineComponent({
       isLinkCopied,
       selectedEntry,
       reset,
+
+      saveTestRoute,
 
       selfRef,
       importModalRef,

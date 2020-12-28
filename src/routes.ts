@@ -3,6 +3,4 @@ import Home from './views/Home.vue'
 // import About from './views/About.vue'
 // import NotFound from './views/NotFound.vue'
 
-export let routes: RouteRecordRaw[] = [
-  { path: '/', component: Home, name: 'home' },
-]
+export let routes: RouteRecordRaw[] = [{ path: '/:a(.*)', component: Home }]
