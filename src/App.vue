@@ -321,11 +321,15 @@ export default defineComponent({
       return result
     })
 
-    const matchedRoute = computed(
-      () =>
-        route.value &&
-        routerMatcher.value.resolve({ path: route.value }, START_LOCATION)
-    )
+    const matchedRoute = computed(() => {
+      // resolve can fail with invalid keys
+      try {
+        return (
+          route.value &&
+          routerMatcher.value.resolve({ path: route.value }, START_LOCATION)
+        )
+      } catch (err) {}
+    })
 
     const copyButtonText = computed(() => {
       return isLinkCopied.value ? 'Copied!' : 'Copy Share link'
