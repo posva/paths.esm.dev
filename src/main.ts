@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import './assets/main.css'
 import App from './App.vue'
 import { routes } from './routes'
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, Router } from 'vue-router'
 import { loadServiceWorker } from './loadSW'
 
 let app = createApp(App)
@@ -12,16 +12,14 @@ let router = createRouter({
   routes: import.meta.hot ? [] : routes,
 })
 
-// @ts-ignore
 if (import.meta.hot) {
-  let removeRoutes = []
+  let removeRoutes: ReturnType<Router['addRoute']>[] = []
 
   for (let route of routes) {
     removeRoutes.push(router.addRoute(route))
   }
 
-  // @ts-ignore
-  import.meta.hot.acceptDeps('./routes.js', ({ routes }) => {
+  import.meta.hot!.accept('./routes.js', ({ routes }) => {
     for (let removeRoute of removeRoutes) removeRoute()
     removeRoutes = []
     for (let route of routes) {
