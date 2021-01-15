@@ -3,7 +3,6 @@ import './assets/main.css'
 import App from './App.vue'
 import { routes } from './routes'
 import { createRouter, createWebHistory, Router } from 'vue-router'
-import { loadServiceWorker } from './loadSW'
 
 let app = createApp(App)
 let router = createRouter({
@@ -27,9 +26,6 @@ if (import.meta.hot) {
     }
     router.replace('')
   })
-} else {
-  // production only
-  loadServiceWorker()
 }
 
 app.use(router)
