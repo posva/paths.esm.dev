@@ -176,12 +176,15 @@
 
       <footer class="mt-8 mb-4 text-xs text-center text-gray-700">
         Created by Eduardo San Martin Morote
-        <a href="https://esm.dev" class="font-bold text-purple-500 underline"
+        <a
+          href="https://esm.dev"
+          rel="nofollow external"
+          class="font-bold text-purple-500 underline"
           >@posva</a
         >
-        2020 ©
-        <br />
+        2020 © -
         <a
+          class="font-bold text-purple-500 underline"
           href="https://github.com/posva/path-rank-tester"
           rel="nofollow external"
           >Source code</a
