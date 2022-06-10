@@ -1,33 +1,33 @@
 <template>
-  <div class="container mx-auto px-2 md:px-4" ref="selfRef">
+  <div class="container px-2 mx-auto md:px-4" ref="selfRef">
     <header class="my-10">
-      <h1 class="text-4xl font-serif leading-tight">Path Ranker</h1>
-      <h2 class="text-lg text-gray-600 ml-2 mb-4">
+      <h1 class="font-serif text-4xl leading-tight">Path Ranker</h1>
+      <h2 class="mb-4 ml-2 text-lg text-gray-600">
         A vue router path rank tester
       </h2>
     </header>
 
     <main class="w-100">
-      <p class="leading-tight text-md mb-6 max-w-3xl pl-4">
+      <p class="max-w-3xl pl-4 mb-6 leading-tight text-md">
         Change paths entries and verify the result on the right. Entries appear
         sorted in <i>descendant</i> score order. You can customize global
         options and also apply overrides. The syntax is explained by
         <a
           href="https://next.router.vuejs.org/guide/essentials/route-matching-syntax.html"
-          class="text-blue-600 font-bold hover:underline"
+          class="font-bold text-blue-600 hover:underline"
           >Vue Router documentation</a
         >. You can for example use custom regexes like
         <code>/:id(\\d+)</code> and <i>repeatable</i> parameters like
         <code>/:id+</code>.
         <br />
         The numbers in a box that looks like this
-        <span class="font-bold bg-gray-400 px-1 inline-block rounded">80</span>
+        <span class="inline-block px-1 font-bold bg-gray-400 rounded">80</span>
         are the score of the path.
         <br />
         If you found a ranking that seems wrong, please share the URL with me by
         DM on
         <a
-          class="text-blue-600 font-bold hover:underline"
+          class="font-bold text-blue-600 hover:underline"
           href="https://twitter.com/posva"
           >Twitter</a
         >
@@ -35,20 +35,20 @@
       </p>
 
       <div
-        class="flex items-strecth content-around justify-around flex-col lg:flex-row"
+        class="flex flex-col content-around justify-around items-strecth lg:flex-row"
       >
         <article class="flex-1 px-1">
           <header>
-            <h3 class="font-serif text-xl mb-4">Paths to rank</h3>
+            <h3 class="mb-4 font-serif text-xl">Paths to rank</h3>
           </header>
           <form @submit.prevent @reset.prevent="reset">
-            <fieldset class="border pl-4 pr-1 pb-2 mb-2">
+            <fieldset class="pb-2 pl-4 pr-1 mb-2 border">
               <legend class="p-2">
                 Configure global options. They will be applied to
                 <b>every</b> path.
               </legend>
 
-              <label for="globalOptions.strict" class="font-bold text-sm block">
+              <label for="globalOptions.strict" class="block text-sm font-bold">
                 <input
                   id="globalOptions.strict"
                   v-model="globalOptions.strict"
@@ -64,7 +64,7 @@
               </label>
               <label
                 for="globalOptions.sensitive"
-                class="font-bold text-sm block"
+                class="block text-sm font-bold"
               >
                 <input
                   id="globalOptions.sensitive"
@@ -88,27 +88,27 @@
                 @enter="focusPathEntry(i + 1)"
                 class="p-2 path-entry"
               />
-              <hr class="bg-gray-400 h-px my-2" />
+              <hr class="h-px my-2 bg-gray-400" />
             </template>
 
             <button
               type="button"
               :disabled="isLinkCopied"
-              class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mt-6 mb-2 block sm:inline-block w-full lg:w-auto"
+              class="block w-full px-4 py-2 mt-6 mb-2 font-semibold text-gray-800 bg-white border border-gray-400 rounded shadow hover:bg-gray-100 sm:inline-block lg:w-auto"
               @click="exportPaths"
             >
               {{ copyButtonText }}
             </button>
             <button
               type="button"
-              class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mt-6 mb-2 block sm:inline-block w-full lg:w-auto lg:ml-2"
+              class="block w-full px-4 py-2 mt-6 mb-2 font-semibold text-gray-800 bg-white border border-gray-400 rounded shadow hover:bg-gray-100 sm:inline-block lg:w-auto lg:ml-2"
               @click="() => importModalRef.open()"
             >
               Import from <code>routes</code> array
             </button>
             <button
               type="reset"
-              class="bg-red-500 hover:bg-red-700 text-white hover:text-gray-100 font-semibold py-2 px-4 border border-gray-400 rounded shadow block sm:inline-block w-full lg:w-auto lg:ml-2"
+              class="block w-full px-4 py-2 font-semibold text-white bg-red-500 border border-gray-400 rounded shadow hover:bg-red-700 hover:text-gray-100 sm:inline-block lg:w-auto lg:ml-2"
             >
               Reset
             </button>
@@ -116,10 +116,10 @@
         </article>
 
         <article
-          class="flex-1 mt-4 md:mt-0 text-left px-1 route-matcher-container"
+          class="flex-1 px-1 mt-4 text-left md:mt-0 route-matcher-container"
         >
           <header>
-            <h3 class="font-serif text-xl mb-8">Ranking results</h3>
+            <h3 class="mb-8 font-serif text-xl">Ranking results</h3>
           </header>
 
           <RouteMatcher
@@ -135,7 +135,7 @@
             @mouseleave.passive="selectedEntry = null"
           />
 
-          <label class="mt-3 block">
+          <label class="block mt-3">
             Test against a string location:
             <input
               autocomplete="off"
@@ -143,7 +143,7 @@
               spellcheck="false"
               v-model="route"
               @change="saveTestRoute"
-              class="block bg-white focus:outline-0 focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal text-sm mt-2"
+              class="block w-full px-4 py-2 mt-2 text-sm leading-normal bg-white border border-gray-300 rounded-lg appearance-none focus:outline-0 focus:shadow-outline"
               type="text"
               placeholder="/home"
             />
@@ -158,7 +158,7 @@
                   v-for="(value, key) in matchedRoute.params"
                   :key="key"
                 >
-                  <span class="font-mono bg-gray-300 rounded-md px-1">{{
+                  <span class="px-1 font-mono bg-gray-300 rounded-md">{{
                     key
                   }}</span
                   >: <span class="font-mono">{{ value }}</span>
@@ -174,12 +174,18 @@
         </article>
       </div>
 
-      <footer class="text-xs text-gray-700 mt-8 mb-4 text-center">
+      <footer class="mt-8 mb-4 text-xs text-center text-gray-700">
         Created by Eduardo San Martin Morote
-        <a href="https://esm.dev" class="text-purple-500 font-bold underline"
+        <a href="https://esm.dev" class="font-bold text-purple-500 underline"
           >@posva</a
         >
         2020 ©
+        <br />
+        <a
+          href="https://github.com/posva/path-rank-tester"
+          rel="nofollow external"
+          >Source code</a
+        >
       </footer>
     </main>
 
@@ -221,7 +227,7 @@ function createPathEntry(path = ''): PathToRank {
     path,
     sensitive: false,
     strict: false,
-    applyOptions: false,
+    applyOptions: true,
   }
 }
 

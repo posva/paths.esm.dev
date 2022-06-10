@@ -1,14 +1,14 @@
 <template>
   <section
     tabindex="0"
-    class="rounded border-2 px-2 py-1 overflow-auto"
+    class="px-2 py-1 overflow-auto border-2 rounded"
     :class="classes"
     :aria-multiselectable="isMatching"
   >
     <h2>
       <span
         :class="isError ? 'bg-red-400' : 'bg-gray-400'"
-        class="font-bold px-1 inline-block rounded mr-2"
+        class="inline-block px-1 mr-2 font-bold rounded"
         >{{ isError ? matcher.name : formattedScore }}</span
       >
       <span class="font-mono">{{ matcher.record.path }}</span>
@@ -26,7 +26,6 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed } from 'vue'
-import { createRouterMatcher } from 'vue-router'
 import { RouteRecordMatcher, RouteRecordMatcherError } from '../types/matcher'
 
 export default defineComponent({

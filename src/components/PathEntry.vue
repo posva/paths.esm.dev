@@ -11,7 +11,7 @@
         autocomplete="off"
         autocapitalize="none"
         spellcheck="false"
-        class="block bg-white focus:outline-0 focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal"
+        class="block w-full px-4 py-2 leading-normal bg-white border border-gray-300 rounded-lg appearance-none focus:outline-0 focus:shadow-outline"
         type="text"
         placeholder="/users/:id"
         ref="input"
@@ -22,11 +22,11 @@
     </label>
     <fieldset
       v-if="path.path"
-      class="border pl-4 pr-1 pb-2"
+      class="pb-2 pl-4 pr-1 border"
       :disabled="!path.applyOptions"
     >
       <legend class="p-2">
-        <label class="text-md block">
+        <label class="block text-md">
           <input
             v-model="path.applyOptions"
             class="leading-tight"

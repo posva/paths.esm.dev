@@ -22,9 +22,10 @@ function encodePathOptions(
   ).toString(16)
 }
 
-function decodePathOptions(
-  options: string
-): { applyOptions: boolean; options: PathOptions } {
+function decodePathOptions(options: string): {
+  applyOptions: boolean
+  options: PathOptions
+} {
   // transform the hex value into an array of the bits as true/false values
   const flags = parseInt(options, 16)
   return {
@@ -53,9 +54,10 @@ function encodePathsAndOptions(
   return str
 }
 
-function decodePathsAndOptions(
-  encodedPathsAndOptions: string
-): { paths: PathToRank[]; options: PathOptions } {
+function decodePathsAndOptions(encodedPathsAndOptions: string): {
+  paths: PathToRank[]
+  options: PathOptions
+} {
   // debugger
   const globalOptionsEnd = encodedPathsAndOptions.indexOf(OPTIONS_DELIMITER)
   const { options } = decodePathOptions(
@@ -94,8 +96,9 @@ export function compressPaths(
   )
 }
 
-export function decompressPaths(
-  paths: string
-): { paths: PathToRank[]; options: PathOptions } {
+export function decompressPaths(paths: string): {
+  paths: PathToRank[]
+  options: PathOptions
+} {
   return decodePathsAndOptions(LZString.decompress(decode64(paths)))
 }

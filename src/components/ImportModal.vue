@@ -1,19 +1,19 @@
 <template>
   <div
-    class="modal-container fixed left-0 top-0 w-screen h-screen flex justify-center items-center"
+    class="fixed top-0 left-0 flex items-center justify-center w-screen h-screen modal-container"
     v-if="isOpen"
     @click="closeIfOut"
+    ref="modalRef"
   >
     <FocusTrap @deactivate="close" :initial-focus="() => textareaRef">
       <!-- NOTE: if we add aria-labeledby and describedby, screen readers repeat the
       whole thing -->
       <section
-        class="bg-white min-h-20 w-64 sm:p-6 p-2 sm:m-0 m-2 rounded border-gray border-2"
+        class="w-64 p-2 m-2 bg-white border-2 rounded min-h-20 sm:p-6 sm:m-0 border-gray"
         role="dialog"
         style="width: 36rem"
-        ref="modalRef"
       >
-        <h2 class="text-2xl font-serif mb-2" id="import-modal-title">
+        <h2 class="mb-2 font-serif text-2xl" id="import-modal-title">
           Import directly from your <code>routes</code> array
         </h2>
 
@@ -30,18 +30,18 @@
             <a
               href="https://github.com/vuejs/vue-devtools"
               target="_blank"
-              class="text-blue-500 font-bold underline"
+              class="font-bold text-blue-500 underline"
               >Vue Devtools</a
             >, select any component in the component panel (the one opened by
             default) and paste this code into the console:</span
           >
 
-          <span class="relative m-0 block hidden sm:block">
+          <span class="relative block m-0">
             <pre
-              class="my-2 rounded border p-4 pr-2 bg-gray-100 text-blue-600 text-sm"
+              class="p-4 pr-2 my-2 text-sm text-blue-600 bg-gray-100 border rounded"
             ><code>copy(JSON.stringify($vm.$router.options.routes))</code></pre>
             <button
-              class="absolute top-0 right-0 mt-3 mr-2 uppercase text-xs text-gray-800 font-bold bg-white hover:bg-gray-100 py-1 px-2 border border-gray-400 rounded shadow"
+              class="absolute top-0 right-0 px-2 py-1 mt-3 mr-2 text-xs font-bold text-gray-800 uppercase bg-white border border-gray-400 rounded shadow hover:bg-gray-100"
               type="button"
               @click="copySnippet"
             >
@@ -59,7 +59,7 @@
             v-if="error"
             tabindex="-1"
             ref="errorRef"
-            class="rounded border border-red-600 bg-red-200 text-red-800 p-2 px-4 mb-4"
+            class="p-2 px-4 mb-4 text-red-800 bg-red-200 border border-red-600 rounded"
           >
             <b>Error parsing <code>routes</code>:</b>
             <br />
@@ -74,20 +74,20 @@
             @keypress.enter.meta.exact="importRoutes(routes)"
             spellcheck="false"
             rows="8"
-            class="bg-white focus:outline-0 focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal font-mono text-sm"
+            class="block w-full px-4 py-2 font-mono text-sm leading-normal bg-white border border-gray-300 rounded-lg appearance-none focus:outline-0 focus:shadow-outline"
             placeholder="Paste here your routes array"
           ></textarea>
 
           <div class="flex justify-between">
             <button
               type="submit"
-              class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mt-6 mb-2 block w-full md:w-auto mr-1"
+              class="block w-full px-4 py-2 mt-6 mb-2 mr-1 font-semibold text-gray-800 bg-white border border-gray-400 rounded shadow hover:bg-gray-100 md:w-auto"
             >
               Import
             </button>
             <button
               type="button"
-              class="bg-red-500 hover:bg-red-700 text-white hover:text-gray-100 font-semibold py-2 px-4 border border-gray-400 rounded shadow mt-6 mb-2 block w-full md:w-auto ml-1"
+              class="block w-full px-4 py-2 mt-6 mb-2 ml-1 font-semibold text-white bg-red-500 border border-gray-400 rounded shadow hover:bg-red-700 hover:text-gray-100 md:w-auto"
               @click="close"
             >
               Close
@@ -109,7 +109,7 @@ import { FocusTrap } from 'focus-trap-vue'
 export default defineComponent({
   components: { FocusTrap },
 
-  setup() {
+  setup(props, { emit }) {
     const isOpen = ref(false)
     const routes = ref('')
     const error = ref<Error | null>(null)
@@ -134,11 +134,14 @@ export default defineComponent({
     }
 
     function closeIfOut(event) {
-      if (event.target === event.currentTarget) this.close()
+      if (event.target === event.currentTarget) close()
     }
 
     function copySnippet(event: MouseEvent) {
-      copy('copy(JSON.stringify($vm.$router.options.routes))', modalRef.value)
+      copy(
+        'copy(JSON.stringify($vm.$router.options.routes))',
+        modalRef.value?.querySelector('section[role="dialog"]')!
+      )
       // @ts-ignore
       if (event.target) event.target.focus()
     }
@@ -160,14 +163,14 @@ export default defineComponent({
           addRouteToPaths(routeConfig[i], null, String(i), paths)
         }
 
-        this.$emit('paths', paths)
-        this.close()
+        emit('paths', paths)
+        close()
       } catch (err) {
         console.error('Failed parsing', err)
-        error.value = err
+        error.value = err as Error
         await nextTick()
-        // @ts-ignore
-        errorRef.value.focus()
+        // @ts-expect-error: FIXME:
+        errorRef.value!.focus()
       }
     }
 
