@@ -446,12 +446,15 @@ export default defineComponent({
     const importModalRef = ref<Element>()
 
     function focusPathEntry(i: number) {
-      const input = selfRef.value.querySelectorAll(
+      const input = selfRef.value?.querySelectorAll(
         '.path-entry input[type="text"]'
       )[i] as HTMLElement
 
-      if (input) input.focus()
-      else (document.activeElement as HTMLElement).blur()
+      if (input) {
+        input.focus()
+      } else {
+        ;(document.activeElement as HTMLElement).blur()
+      }
     }
 
     return {
