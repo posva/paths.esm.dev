@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "lint": "prettier -c --parser typescript \"src/**/*.[jt]s?(x)\" --parser vue \"src/**/*.vue\"",
+    "lint": "prettier -c \"src/**/*.{ts,vue,js}\"",
     "lint:fix": "pnpm run lint --write",
     "build": "cross-env NODE_ENV=production vite build"
   },

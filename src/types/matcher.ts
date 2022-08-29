@@ -6,8 +6,9 @@ export interface PathToRank extends _RouteRecordBase {
 
 export type PathOptions = Parameters<typeof createRouterMatcher>[1]
 
-export type RouteRecordMatcher = ReturnType<
-  ReturnType<typeof createRouterMatcher>['getRecordMatcher']
+export type RouteRecordMatcher = Exclude<
+  ReturnType<ReturnType<typeof createRouterMatcher>['getRecordMatcher']>,
+  undefined
 >
 
 export type RouteRecordMatcherError = Error & {
