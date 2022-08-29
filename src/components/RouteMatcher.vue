@@ -42,6 +42,7 @@ export default defineComponent({
     const isMatching = computed(
       () =>
         !isError.value &&
+        props.currentLocation &&
         (props.matcher as RouteRecordMatcher).re.test(props.currentLocation)
     )
     const formattedScore = computed(() =>

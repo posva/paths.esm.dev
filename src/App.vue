@@ -17,8 +17,9 @@
           class="font-bold text-blue-600 hover:underline"
           >Vue Router documentation</a
         >. You can for example use custom regexes like
-        <code>/:id(\\d+)</code> and <i>repeatable</i> parameters like
-        <code>/:id+</code>.
+        <code>/:id(\d+)</code> and <i>repeatable</i> parameters like
+        <code>/:id+</code>. Make sure to
+        <b>double escape backslahes in your project</b>.
         <br />
         The numbers in a box that looks like this
         <span class="inline-block px-1 font-bold bg-gray-400 rounded">80</span>
@@ -277,7 +278,7 @@ export default defineComponent({
 
     const globalOptions = ref({ ...defaultOptions })
 
-    const beforeLastPathEntry = computed(
+    const beforeLastPathEntry = computed<PathToRank | undefined>(
       () => paths.value[paths.value.length - 2]
     )
 
@@ -314,8 +315,8 @@ export default defineComponent({
         try {
           // to hard to type this one correctly
           matcher.addRoute(record as any)
-          matcherMap.set(name, matcher.getRecordMatcher(name))
-        } catch (error) {
+          matcherMap.set(name, matcher.getRecordMatcher(name)!)
+        } catch (error: any) {
           error.record = record
           result.push(error as RouteRecordMatcherError)
         }
@@ -324,7 +325,7 @@ export default defineComponent({
       matcher
         .getRoutes()
         .forEach((route) =>
-          result.push(matcherMap.get(route.record.name as symbol))
+          result.push(matcherMap.get(route.record.name as symbol)!)
         )
 
       return result
@@ -345,11 +346,7 @@ export default defineComponent({
     })
 
     function reset() {
-      paths.value = [
-        createPathEntry('/home'),
-        createPathEntry('/:page'),
-        createPathEntry(),
-      ]
+      paths.value = [createPathEntry('/'), createPathEntry()]
     }
 
     function updateStateFromQuery(): void {
@@ -413,7 +410,7 @@ export default defineComponent({
         $router.push({ query: { p: lastEncodedPaths.value }, hash: '#' })
 
       watch(
-        () => beforeLastPathEntry.value.path,
+        () => beforeLastPathEntry.value?.path,
         (path) => {
           if (!path && paths.value.length > 2 && !lastPathEntry.value.path) {
             paths.value.pop()
