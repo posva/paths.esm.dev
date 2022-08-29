@@ -1,9 +1,12 @@
+[build.environment]
+NPM_FLAGS = "--version"
+
 [build]
-  ignore = "git diff --quiet HEAD^ HEAD src index.html"
-  publish = "dist"
-  command = "yarn run build"
+command = "npx pnpm@7 i --store=node_modules/.pnpm-store && npx pnpm@7 run build"
+ignore = "git diff --quiet HEAD^ HEAD src index.html"
+publish = "dist"
 
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+from = "/*"
+status = 200
+to = "/index.html"
