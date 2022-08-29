@@ -100,5 +100,5 @@ export function decompressPaths(paths: string): {
   paths: PathToRank[]
   options: PathOptions
 } {
-  return decodePathsAndOptions(LZString.decompress(decode64(paths)))
+  return decodePathsAndOptions(LZString.decompress(decode64(paths))!)
 }
