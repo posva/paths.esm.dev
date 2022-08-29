@@ -74,7 +74,7 @@
             @keypress.enter.meta.exact="importRoutes(routes)"
             spellcheck="false"
             rows="8"
-            class="block w-full px-4 py-2 font-mono text-sm leading-normal bg-white border border-gray-300 rounded-lg appearance-none focus:outline-0 focus:shadow-outline"
+            class="block w-full px-4 py-2 font-mono text-sm leading-normal bg-white border border-gray-300 rounded-lg"
             placeholder="Paste here your routes array"
           ></textarea>
 
@@ -133,7 +133,7 @@ export default defineComponent({
       isOpen.value = false
     }
 
-    function closeIfOut(event) {
+    function closeIfOut(event: PointerEvent) {
       if (event.target === event.currentTarget) close()
     }
 
