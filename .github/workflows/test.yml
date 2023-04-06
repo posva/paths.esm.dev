@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v3
+      - uses: pnpm/action-setup@v2
         with:
           version: 8
       - uses: actions/setup-node@v3
@@ -19,6 +19,6 @@ jobs:
           node-version: 18
           cache: 'pnpm'
 
-      - run: pnpm install
+      - run: pnpm install --frozen-lockfile
       - run: pnpm run lint
       - run: pnpm run build
