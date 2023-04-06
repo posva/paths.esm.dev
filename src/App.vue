@@ -290,7 +290,11 @@ export default defineComponent({
       return (paths.value as PathToRank[])
         .filter((path) => path.path.startsWith('/'))
         .map((path) => {
-          const copy: PathToRank = { ...path }
+          const copy: PathToRank = {
+            ...path,
+            // replace double escapes with a single escape to align better with docs
+            path: path.path.replace(/\\\\/g, '\\'),
+          }
           if (!path.applyOptions) {
             delete copy.sensitive
             delete copy.strict
