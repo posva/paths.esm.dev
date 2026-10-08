@@ -39,3 +39,26 @@ against `/optional`, version 4.2.4 returned `{ id: '' }`; version 5.4.0 returns
 `{}`. The app now displays that no parameters were found. Dynamic parameters
 and repeated parameter arrays retain their values. This was verified with
 both installed router versions.
+
+## Package manager
+
+The project now pins pnpm 12.10.1. Release notes for pnpm 9, 10, 11, and 12
+were reviewed before regenerating the lockfile in format 9. The generated
+lockfile also records the package manager dependencies.
+
+- Move the scoped focus-trap peer rule from `package.json` to
+  `pnpm-workspace.yaml`, as required by pnpm 11 and newer.
+- Use `pnpm/action-setup@v6` in CI. Its version 6.1 release adds pnpm 12
+  support; it reads the pinned version from `package.json`.
+- pnpm added exact release-age exceptions for the already tested Vite 8.3.4
+  and Vue Router 5.4.0 releases. Other packages retain the default 24-hour
+  release-age check. No dependency build scripts needed approval.
+- Frozen install, peer checks, Vue type checking, formatting, and production
+  build pass with pnpm 12.10.1. TypeScript remains at 6.0.3.
+
+Sources: [pnpm 9](https://github.com/pnpm/pnpm/releases/tag/v9.0.0),
+[pnpm 10](https://github.com/pnpm/pnpm/releases/tag/v10.0.0),
+[pnpm 11](https://github.com/pnpm/pnpm/releases/tag/v11.0.0),
+[pnpm 12](https://github.com/pnpm/pnpm/releases/tag/v12.0.0),
+[pnpm 12.10.1](https://github.com/pnpm/pnpm/releases/tag/v12.10.1), and
+[pnpm/action-setup 6.1](https://github.com/pnpm/action-setup/releases/tag/v6.1.0).
