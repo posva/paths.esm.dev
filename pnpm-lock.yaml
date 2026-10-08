@@ -188,8 +188,8 @@ importers:
         specifier: ^3.5.43
         version: 3.5.43(typescript@6.0.3)
       vue-router:
-        specifier: ^5.4.0
-        version: 5.4.0(@vue/compiler-sfc@3.5.43)(rolldown@1.2.13)(vite@8.3.4(jiti@2.7.0))(vue@3.5.43(typescript@6.0.3))
+        specifier: https://pkg.pr.new/vue-router@42462bd
+        version: https://pkg.pr.new/vue-router@42462bd(@vue/compiler-sfc@3.5.43)(rolldown@1.2.13)(vite@8.3.4(jiti@2.7.0))(vue@3.5.43(typescript@6.0.3))
     devDependencies:
       '@tailwindcss/vite':
         specifier: ^4.3.3
@@ -1006,8 +1006,9 @@ packages:
   vscode-uri@3.2.0:
     resolution: {integrity: sha512-m2gXo3bn0G1kT9InzMf07fTbqMbGtyckj3bH5ktLO+1Ssv+yiATZ4dhwaQv9UZWxJh6E9IFGnQyjgWVDWVBDrg==}
 
-  vue-router@5.4.0:
-    resolution: {integrity: sha512-pFvcYcxinDHjZUlf7AzFBrT8r8Xqvv4uMHoJnjc+EqPawXQvHTkF8S4tfSmQLpriVHUGfkaKlI7Et0KRjTMTdw==}
+  vue-router@https://pkg.pr.new/vue-router@42462bd:
+    resolution: {integrity: sha512-X2zk0i10EEe0tIGahDdHRmrwr+W3nKrXuy/V4ZZwEHu3ArgIhvyBdoXrNBEPgNvKZGW5o5UDaj15y3AgTL+zDw==, tarball: https://pkg.pr.new/vue-router@42462bd}
+    version: 5.4.0
     peerDependencies:
       '@pinia/colada': '>=0.21.2'
       '@vue/compiler-sfc': ^3.5.34 || ^4.0.0
@@ -1652,7 +1653,7 @@ snapshots:
 
   vscode-uri@3.2.0: {}
 
-  vue-router@5.4.0(@vue/compiler-sfc@3.5.43)(rolldown@1.2.13)(vite@8.3.4(jiti@2.7.0))(vue@3.5.43(typescript@6.0.3)):
+  vue-router@https://pkg.pr.new/vue-router@42462bd(@vue/compiler-sfc@3.5.43)(rolldown@1.2.13)(vite@8.3.4(jiti@2.7.0))(vue@3.5.43(typescript@6.0.3)):
     dependencies:
       '@vue-macros/common': 3.1.4(vue@3.5.43(typescript@6.0.3))
       '@vue/devtools-api': 8.2.1

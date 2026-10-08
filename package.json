@@ -18,7 +18,7 @@
     "lz-string": "^1.5.0",
     "shapify": "^1.1.0",
     "vue": "^3.5.43",
-    "vue-router": "^5.4.0"
+    "vue-router": "https://pkg.pr.new/vue-router@42462bd"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
