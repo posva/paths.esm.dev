@@ -8,7 +8,6 @@ import { loadServiceWorker } from './loadSW'
 let app = createApp(App)
 let router = createRouter({
   history: createWebHistory(),
-  // @ts-ignore
   routes: import.meta.hot ? [] : routes,
 })
 
@@ -19,7 +18,9 @@ if (import.meta.hot) {
     removeRoutes.push(router.addRoute(route))
   }
 
-  import.meta.hot!.accept('./routes.js', ({ routes }) => {
+  import.meta.hot!.accept('./routes', (module) => {
+    if (!module) return
+    const { routes } = module
     for (let removeRoute of removeRoutes) removeRoute()
     removeRoutes = []
     for (let route of routes) {

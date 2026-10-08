@@ -1,11 +1,11 @@
 'use strict'
 
-const ENC = {
+const ENC: Record<string, string> = {
   '+': '-',
   '/': '_',
   '=': '.',
 }
-const DEC = {
+const DEC: Record<string, string> = {
   '-': '+',
   _: '/',
   '.': '=',
@@ -66,7 +66,7 @@ export const isUrlSafeBase64 = (string: string) =>
 
 /* Array of bytes to base64 string decoding */
 
-function b64ToUint6(nChr) {
+function b64ToUint6(nChr: number) {
   return nChr > 64 && nChr < 91
     ? nChr - 65
     : nChr > 96 && nChr < 123
@@ -80,7 +80,7 @@ function b64ToUint6(nChr) {
             : 0
 }
 
-function base64DecToArr(sBase64, nBlockSize) {
+function base64DecToArr(sBase64: string, nBlockSize?: number) {
   var sB64Enc = sBase64.replace(/[^A-Za-z0-9\+\/]/g, ''),
     nInLen = sB64Enc.length,
     nOutLen = nBlockSize
@@ -108,7 +108,7 @@ function base64DecToArr(sBase64, nBlockSize) {
 
 /* Base64 string to array encoding */
 
-function uint6ToB64(nUint6) {
+function uint6ToB64(nUint6: number) {
   return nUint6 < 26
     ? nUint6 + 65
     : nUint6 < 52
@@ -122,7 +122,7 @@ function uint6ToB64(nUint6) {
             : 65
 }
 
-function base64EncArr(aBytes) {
+function base64EncArr(aBytes: Uint8Array) {
   var eqLen = (3 - (aBytes.length % 3)) % 3,
     sB64Enc = ''
 
@@ -164,7 +164,6 @@ export function encode(data: string): string {
 export function decode(data: string): string {
   return String.fromCharCode.apply(
     null,
-    // @ts-ignore
-    new Uint16Array(base64DecToArr(safeDecode(data), 2).buffer)
+    Array.from(new Uint16Array(base64DecToArr(safeDecode(data), 2).buffer))
   )
 }

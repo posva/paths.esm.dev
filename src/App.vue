@@ -103,7 +103,7 @@
             <button
               type="button"
               class="block w-full px-4 py-2 mt-6 mb-2 font-semibold text-gray-800 bg-white border border-gray-400 rounded shadow-sm hover:bg-gray-100 sm:inline-block lg:w-auto lg:ml-2"
-              @click="() => importModalRef.open()"
+              @click="() => importModalRef?.open()"
             >
               Import from <code>routes</code> array
             </button>
@@ -447,7 +447,7 @@ export default defineComponent({
     }
 
     const selfRef = ref<Element>()
-    const importModalRef = ref<Element>()
+    const importModalRef = ref<InstanceType<typeof ImportModal>>()
 
     function focusPathEntry(i: number) {
       const input = selfRef.value?.querySelectorAll(

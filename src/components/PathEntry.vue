@@ -55,14 +55,14 @@ import { PathToRank } from '../types/matcher'
 
 export default defineComponent({
   props: {
-    path: Object as PropType<PathToRank>,
+    path: { type: Object as PropType<PathToRank>, required: true },
     active: Boolean,
   },
 
   setup(props, { emit }) {
-    const input = ref()
+    const input = ref<HTMLInputElement>()
     watch(
-      () => props.path!.path,
+      () => props.path.path,
       (path) => {
         // if the user is navigating while the input is focused, we emit focus to
         // update the active route

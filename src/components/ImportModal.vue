@@ -103,7 +103,7 @@
 import { defineComponent, ref, nextTick } from 'vue'
 import copy from 'clipboard-text'
 import JSON5 from 'json5'
-import { PathToRank } from '../types/matcher'
+import { PathOptions, PathToRank } from '../types/matcher'
 import { FocusTrap } from 'focus-trap-vue'
 
 export default defineComponent({
@@ -114,10 +114,10 @@ export default defineComponent({
     const routes = ref('')
     const error = ref<Error | null>(null)
 
-    const modalRef = ref<Element>()
-    const errorRef = ref<Element>()
-    const formRef = ref<Element>()
-    const textareaRef = ref<Element>()
+    const modalRef = ref<HTMLDivElement>()
+    const errorRef = ref<HTMLParagraphElement>()
+    const formRef = ref<HTMLFormElement>()
+    const textareaRef = ref<HTMLTextAreaElement>()
 
     function open() {
       // disallow scroll
@@ -142,8 +142,7 @@ export default defineComponent({
         'copy(JSON.stringify($vm.$router.options.routes))',
         modalRef.value?.querySelector('section[role="dialog"]')!
       )
-      // @ts-ignore
-      if (event.target) event.target.focus()
+      if (event.target instanceof HTMLElement) event.target.focus()
     }
 
     async function importRoutes(routes: string) {
@@ -169,7 +168,6 @@ export default defineComponent({
         console.error('Failed parsing', err)
         error.value = err as Error
         await nextTick()
-        // @ts-expect-error: FIXME:
         errorRef.value!.focus()
       }
     }
@@ -229,7 +227,7 @@ function addRouteToPaths(
       ? route.strict
       : route.pathToRegexpOptions && route.pathToRegexpOptions.strict
 
-  const routeOptions = { strict, sensitive }
+  const routeOptions: PathOptions = { strict, sensitive }
   if (strict !== null) delete routeOptions.strict
   if (sensitive !== null) delete routeOptions.sensitive
 
