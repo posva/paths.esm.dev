@@ -19,7 +19,7 @@
         >. You can for example use custom regexes like
         <code>/:id(\d+)</code> and <i>repeatable</i> parameters like
         <code>/:id+</code>. Make sure to
-        <b>double escape backslahes in your project</b>.
+        <b>double escape backslashes in your project</b>.
         <br />
         The numbers in a box that looks like this
         <span class="inline-block px-1 font-bold bg-gray-400 rounded">80</span>
