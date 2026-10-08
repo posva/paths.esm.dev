@@ -1,7 +1,10 @@
 [build]
 command = "pnpm run build"
-ignore = "git diff --quiet HEAD^ HEAD src index.html"
+ignore = "git diff --quiet HEAD^ HEAD src index.html netlify.toml"
 publish = "dist"
+
+[build.environment]
+NODE_VERSION = "24"
 
 [[redirects]]
 from = "/*"
