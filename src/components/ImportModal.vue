@@ -41,7 +41,7 @@
               class="p-4 pr-2 my-2 text-sm text-blue-600 bg-gray-100 border rounded"
             ><code>copy(JSON.stringify($vm.$router.options.routes))</code></pre>
             <button
-              class="absolute top-0 right-0 px-2 py-1 mt-3 mr-2 text-xs font-bold text-gray-800 uppercase bg-white border border-gray-400 rounded shadow hover:bg-gray-100"
+              class="absolute top-0 right-0 px-2 py-1 mt-3 mr-2 text-xs font-bold text-gray-800 uppercase bg-white border border-gray-400 rounded shadow-sm hover:bg-gray-100"
               type="button"
               @click="copySnippet"
             >
@@ -81,13 +81,13 @@
           <div class="flex justify-between">
             <button
               type="submit"
-              class="block w-full px-4 py-2 mt-6 mb-2 mr-1 font-semibold text-gray-800 bg-white border border-gray-400 rounded shadow hover:bg-gray-100 md:w-auto"
+              class="block w-full px-4 py-2 mt-6 mb-2 mr-1 font-semibold text-gray-800 bg-white border border-gray-400 rounded shadow-sm hover:bg-gray-100 md:w-auto"
             >
               Import
             </button>
             <button
               type="button"
-              class="block w-full px-4 py-2 mt-6 mb-2 ml-1 font-semibold text-white bg-red-500 border border-gray-400 rounded shadow hover:bg-red-700 hover:text-gray-100 md:w-auto"
+              class="block w-full px-4 py-2 mt-6 mb-2 ml-1 font-semibold text-white bg-red-500 border border-gray-400 rounded shadow-sm hover:bg-red-700 hover:text-gray-100 md:w-auto"
               @click="close"
             >
               Close

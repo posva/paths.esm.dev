@@ -7,7 +7,7 @@
       </h2>
     </header>
 
-    <main class="w-100">
+    <main class="w-full">
       <p class="max-w-3xl pl-4 mb-6 leading-tight text-md">
         Change paths entries and verify the result on the right. Entries appear
         sorted in <i>descendant</i> score order. You can customize global
@@ -95,21 +95,21 @@
             <button
               type="button"
               :disabled="isLinkCopied"
-              class="block w-full px-4 py-2 mt-6 mb-2 font-semibold text-gray-800 bg-white border border-gray-400 rounded shadow hover:bg-gray-100 sm:inline-block lg:w-auto"
+              class="block w-full px-4 py-2 mt-6 mb-2 font-semibold text-gray-800 bg-white border border-gray-400 rounded shadow-sm hover:bg-gray-100 sm:inline-block lg:w-auto"
               @click="exportPaths"
             >
               {{ copyButtonText }}
             </button>
             <button
               type="button"
-              class="block w-full px-4 py-2 mt-6 mb-2 font-semibold text-gray-800 bg-white border border-gray-400 rounded shadow hover:bg-gray-100 sm:inline-block lg:w-auto lg:ml-2"
+              class="block w-full px-4 py-2 mt-6 mb-2 font-semibold text-gray-800 bg-white border border-gray-400 rounded shadow-sm hover:bg-gray-100 sm:inline-block lg:w-auto lg:ml-2"
               @click="() => importModalRef.open()"
             >
               Import from <code>routes</code> array
             </button>
             <button
               type="reset"
-              class="block w-full px-4 py-2 font-semibold text-white bg-red-500 border border-gray-400 rounded shadow hover:bg-red-700 hover:text-gray-100 sm:inline-block lg:w-auto lg:ml-2"
+              class="block w-full px-4 py-2 font-semibold text-white bg-red-500 border border-gray-400 rounded shadow-sm hover:bg-red-700 hover:text-gray-100 sm:inline-block lg:w-auto lg:ml-2"
             >
               Reset
             </button>

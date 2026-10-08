@@ -6,20 +6,22 @@ This is the path parser used by Vue Router. It transforms paths into Regexp and 
 
 Install dependencies:
 
+Use Node.js 20.19+ or 22.12+ and the pnpm version in `package.json`.
+
 ```sh
-yarn
+pnpm install
 ```
 
 Run the development server:
 
 ```sh
-yarn dev
+pnpm dev
 ```
 
 Build for production:
 
 ```sh
-yarn build
+pnpm build
 # requires a global server command installed
 serve dist
 ```
