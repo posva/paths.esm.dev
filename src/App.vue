@@ -5,6 +5,36 @@
       <h2 class="mb-4 ml-2 text-lg text-gray-600">
         A vue router path rank tester
       </h2>
+      <label
+        class="block mt-4 text-sm font-medium text-gray-600"
+        for="matcher-version"
+      >
+        Matcher version
+      </label>
+      <div class="relative inline-block mt-2">
+        <select
+          id="matcher-version"
+          v-model="matcherVersion"
+          class="matcher-version block py-2 pl-3 pr-10 text-sm font-normal text-gray-800 bg-white border border-gray-300 rounded-lg shadow-sm appearance-none cursor-pointer hover:border-gray-400 focus:border-blue-500 focus:outline-2 focus:outline-blue-500 focus:outline-offset-2"
+        >
+          <option value="classic">Classic</option>
+          <option value="experimental">Experimental</option>
+        </select>
+        <svg
+          class="absolute right-3 top-1/2 w-4 h-4 -translate-y-1/2 text-gray-600 pointer-events-none"
+          viewBox="0 0 20 20"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            d="m5 7.5 5 5 5-5"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </div>
     </header>
 
     <main class="w-full">
@@ -33,6 +63,11 @@
           >Twitter</a
         >
         or Discord.
+      </p>
+
+      <p v-if="matcherVersion === 'experimental'" class="pl-4 mb-6 text-sm">
+        The experimental tree parser ignores inline custom regexps such as
+        <code>/:id(\d+)</code>.
       </p>
 
       <div
@@ -209,6 +244,10 @@ import {
 import copy from 'clipboard-text'
 import { compressPaths, decompressPaths } from './api/encode-data'
 import {
+  createExperimentalMatcher,
+  compareExperimentalMatchers,
+} from './api/experimental-matcher'
+import {
   createRouterMatcher,
   LocationQueryRaw,
   START_LOCATION,
@@ -260,6 +299,17 @@ export default defineComponent({
     const $route = useRoute()
     const $router = useRouter()
 
+    const matcherVersion = computed({
+      get: () =>
+        $route.query.matcher === 'experimental' ? 'experimental' : 'classic',
+      set: (version: 'classic' | 'experimental') => {
+        const query: LocationQueryRaw = { ...$route.query }
+        if (version === 'experimental') query.matcher = version
+        else delete query.matcher
+        $router.push({ query, hash: $route.hash })
+      },
+    })
+
     const route = ref('')
 
     watch(
@@ -306,6 +356,19 @@ export default defineComponent({
     const routerMatcher = ref(createRouterMatcher([], globalOptions.value))
 
     const pathMatchers = computed(() => {
+      if (matcherVersion.value === 'experimental') {
+        const result: Array<RouteRecordMatcher | RouteRecordMatcherError> = []
+        filteredPaths.value.forEach((record) => {
+          try {
+            result.push(createExperimentalMatcher(record, globalOptions.value))
+          } catch (cause) {
+            const error =
+              cause instanceof Error ? cause : new Error(String(cause))
+            result.push(Object.assign(error, { record }))
+          }
+        })
+        return result.sort(compareExperimentalMatchers)
+      }
       const matcher = createRouterMatcher([], globalOptions.value)
       routerMatcher.value = matcher
       const matcherMap = new Map<
@@ -336,6 +399,19 @@ export default defineComponent({
     })
 
     const matchedRoute = computed(() => {
+      const matchers = pathMatchers.value
+      if (matcherVersion.value === 'experimental') {
+        for (const matcher of matchers) {
+          if (matcher instanceof Error || !route.value) continue
+          try {
+            return {
+              path: route.value,
+              params: matcher.parse(route.value) as Record<string, unknown>,
+            }
+          } catch {}
+        }
+        return
+      }
       // resolve can fail with invalid keys
       try {
         return (
@@ -411,7 +487,10 @@ export default defineComponent({
 
       // ensure the route query is present since we generate instead of serving the app
       if (!$route.query.p)
-        $router.push({ query: { p: lastEncodedPaths.value }, hash: '#' })
+        $router.push({
+          query: { ...$route.query, p: lastEncodedPaths.value },
+          hash: '#',
+        })
 
       watch(
         () => beforeLastPathEntry.value?.path,
@@ -463,6 +542,7 @@ export default defineComponent({
 
     return {
       paths,
+      matcherVersion,
       lastEncodedPaths,
       exportPaths,
       focusPathEntry,

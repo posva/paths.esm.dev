@@ -1,26 +1,26 @@
 <template>
   <section
     tabindex="0"
-    class="px-2 py-1 overflow-auto border-2 rounded"
+    class="px-3 py-2 space-y-2 overflow-auto border-2 rounded"
     :class="classes"
     :aria-multiselectable="isMatching"
   >
-    <h2>
+    <p>
       <span
         :class="errorMatcher ? 'bg-red-400' : 'bg-gray-400'"
-        class="inline-block px-1 mr-2 font-bold rounded"
+        class="inline-block px-1 font-bold rounded"
         >{{ errorMatcher ? errorMatcher.name : formattedScore }}</span
       >
-      <span class="font-mono">{{ matcher.record.path }}</span>
-    </h2>
-    <h3>
+    </p>
+    <h2 class="font-mono">{{ matcher.record.path }}</h2>
+    <p>
       <template v-if="errorMatcher">
         {{ errorMatcher.message.replace(/^err[^:]*:\s*/i, '') }}
       </template>
       <template v-else-if="validMatcher">
         Regexp: <span class="font-mono">{{ validMatcher.re.toString() }}</span>
       </template>
-    </h3>
+    </p>
   </section>
 </template>
 
