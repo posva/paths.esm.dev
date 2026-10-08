@@ -217,7 +217,7 @@ function addRouteToPaths(
 
   if ((!route.path && !parent) || typeof route.path !== 'string')
     throw new Error(
-      `Invalid route at position ${parentIndex}: Property "path" must be a non-epmty string`
+      `Invalid route at position ${parentIndex}: Property "path" must be a non-empty string`
     )
 
   const sensitive: boolean =
